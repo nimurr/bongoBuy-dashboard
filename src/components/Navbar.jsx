@@ -1,6 +1,10 @@
 import { Link, NavLink } from "react-router-dom";
 import { IoHomeOutline, IoSettingsOutline } from "react-icons/io5";
-import { FaCartArrowDown, FaCartPlus, FaProductHunt, FaUserPlus } from "react-icons/fa6";
+import { 
+  FaCartPlus,
+  FaProductHunt,
+  FaUserPlus,
+} from "react-icons/fa6";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { MdMovieEdit, MdStars } from "react-icons/md";
 import { TbShoppingCartCheck } from "react-icons/tb";
@@ -26,24 +30,28 @@ export default function Navbar() {
             </NavLink>
             <NavLink
               to={"/running-order"}
-              className="my-1 flex gap-2 items-center font-semibold dark:text-white p-2"
+              className="my-1 flex gap-2 items-center justify-between font-semibold dark:text-white p-2"
             >
-              <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
-                <FaCartPlus />
+              <div className="flex gap-2 items-center">
+                <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
+                  <FaCartPlus />
+                </div>
+                Running Orders{" "}
               </div>
-              Running Orders{" "}
               <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
                 5
               </span>
             </NavLink>
             <NavLink
               to={"/completed-order"}
-              className="my-1 flex gap-2 items-center font-semibold dark:text-white p-2"
+              className="my-1 flex gap-2 justify-between items-center font-semibold dark:text-white p-2"
             >
-              <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
-                <TbShoppingCartCheck />
+              <div className="flex gap-2 items-center">
+                <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
+                  <TbShoppingCartCheck />
+                </div>
+                Completed Orders{" "}
               </div>
-              Completed Orders{" "}
               <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
                 99+
               </span>
@@ -51,24 +59,28 @@ export default function Navbar() {
 
             <NavLink
               to={"/customer-message"}
-              className="my-1 flex gap-2 items-center font-semibold dark:text-white p-2"
+              className="my-1 flex gap-2 justify-between items-center font-semibold dark:text-white p-2"
             >
-              <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
-                <RiMessage2Fill />
+              <div className="flex gap-2 items-center">
+                <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
+                  <RiMessage2Fill />
+                </div>
+                Customer Message{" "}
               </div>
-              Customer Message{" "}
               <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
                 99+
               </span>
             </NavLink>
             <NavLink
               to={"/review-request"}
-              className="my-1 flex gap-2 items-center font-semibold dark:text-white p-2"
+              className="my-1 flex gap-2 justify-between items-center font-semibold dark:text-white p-2"
             >
-              <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
-                <MdStars />
+              <div className="flex gap-2 items-center">
+                <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
+                  <MdStars />
+                </div>
+                Review Request{" "}
               </div>
-              Review Request{" "}
               <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
                 10+
               </span>
@@ -76,12 +88,15 @@ export default function Navbar() {
 
             <NavLink
               to={"/all-products"}
-              className="my-1 flex gap-2 items-center font-semibold dark:text-white p-2"
+              className="my-1 flex gap-2 justify-between items-center font-semibold dark:text-white p-2"
             >
-              <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
-                <FaProductHunt />
+              <div className="flex gap-2 items-center">
+                <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
+                  <FaProductHunt />
+                </div>
+                All Products{" "}
               </div>
-              All Products <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
+              <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
                 99+
               </span>
             </NavLink>
@@ -113,7 +128,7 @@ export default function Navbar() {
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <IoSettingsOutline />
               </div>
-              Setting
+              Settings
             </NavLink>
             <NavLink
               to={"/pages-setting"}
