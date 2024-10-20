@@ -2,6 +2,7 @@ import { Button, Modal, Table } from "flowbite-react";
 import { useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Import arrow icons
+import { Link } from "react-router-dom";
 
 export default function AllProducts() {
 
@@ -112,11 +113,11 @@ export default function AllProducts() {
                 <Table.Cell>{product.category}</Table.Cell>
                 <Table.Cell>{product.price}</Table.Cell>
                 <Table.Cell className="flex justify-end">
-                  <button
+                  <Link to={'/all-products/6714919cdaff8b0c57e55a1b'}
                     className="py-2 px-5 mr-2 bg-blue-600 rounded text-white dark:text-white"
                   >
                     Edit
-                  </button>
+                  </Link>
                   <button
                     className="p-2 mr-2 bg-red-600 rounded text-white dark:text-white"
                   >

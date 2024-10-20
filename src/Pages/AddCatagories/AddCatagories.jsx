@@ -41,7 +41,6 @@ export default function AddCategories() {
       setUploadImage(uploadImageURL);
     } catch (error) {
       console.error("Error uploading the image:", error);
-      alert("");
       toast.error("Image upload failed !!", {
         position: "top-right",
         autoClose: 3000,

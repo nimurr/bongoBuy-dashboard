@@ -18,6 +18,7 @@ import CompetedOrders from "./Pages/Orders/CompetedOrders.jsx";
 import RunningOrders from "./Pages/Orders/RunningOrders.jsx";
 import CustomerMassage from "./Pages/CustomerMassage/CustomerMassage.jsx";
 import Admins from "./Pages/Admins.jsx";
+import ProductsDetails from "./Pages/AllProducts/ProductsDetails.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "/all-products",
         element: <Privetroute> <AllProducts></AllProducts> </Privetroute>,
+      },
+      {
+        path: "/all-products/:id",
+        element: <Privetroute> <ProductsDetails></ProductsDetails> </Privetroute>,
       },
       {
         path: "/add-catagories",
