@@ -54,7 +54,7 @@ function App() {
       >
         <button
           onClick={handleShow}
-          className="text-4xl z-[999999999] dark:text-gray-200  dark:bg-gray-700 rounded absolute lg:hidden right-5 top-6"
+          className="text-4xl z-[99999] dark:text-gray-200  dark:bg-gray-700 rounded absolute lg:hidden right-5 top-6"
         >
           <IoMdClose className="" />
         </button>

@@ -6,7 +6,7 @@ import {
   FaUserPlus,
 } from "react-icons/fa6";
 import { IoMdAddCircleOutline } from "react-icons/io";
-import { MdMovieEdit, MdStars } from "react-icons/md";
+import {  MdStars } from "react-icons/md";
 import { TbShoppingCartCheck } from "react-icons/tb";
 import { RiMessage2Fill } from "react-icons/ri";
 export default function Navbar() {
@@ -129,16 +129,7 @@ export default function Navbar() {
                 <IoSettingsOutline />
               </div>
               Settings
-            </NavLink>
-            <NavLink
-              to={"/pages-setting"}
-              className="my-1 flex gap-2 items-center font-semibold dark:text-white p-2"
-            >
-              <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
-                <MdMovieEdit />
-              </div>
-              Pages
-            </NavLink>
+            </NavLink> 
 
             <NavLink
               to={"/add-admin"}

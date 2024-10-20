@@ -11,7 +11,7 @@ export default function Admins() {
   // Fetch admin data
   const fetchAdminData = () => {
     setLoading(true); // Start loading
-    fetch("https://notion-expo-server.vercel.app/admins")
+    fetch("http://localhost:5000/all-admins") // Changed to local route
       .then((res) => res.json())
       .then((result) => {
         setAdminData(result);
@@ -32,7 +32,8 @@ export default function Admins() {
     const email = form.email.value;
     const formData = { name, email };
 
-    fetch("https://notion-expo-server.vercel.app/admins", {
+    fetch("http://localhost:5000/all-admins", {
+      // Changed to local route
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -77,7 +78,8 @@ export default function Admins() {
   // Handle remove admin
   const handleRemove = (id) => {
     setLoading(true); // Start loading while removing admin
-    fetch(`https://notion-expo-server.vercel.app/admins/${id}`, {
+    fetch(`http://localhost:5000/all-admins/${id}`, {
+      // Changed to local route
       method: "DELETE",
     })
       .then((res) => {
@@ -121,14 +123,14 @@ export default function Admins() {
       <ToastContainer />
 
       <form
-        className="sm:w-[50%] mx-auto bg-slate-300 dark:bg-gray-600 p-5"
+        className="sm:w-[50%] mx-auto bg-primary  p-5"
         onSubmit={handleAdmin}
       >
-        <h2 className="text-center my-5 dark:text-white  text-3xl font-semibold">
+        <h2 className="text-center my-5 font-bold text-white  text-3xl ">
           Add Admin
         </h2>
         <label>
-          <span className="block dark:text-white">Add Admin Name</span>
+          <span className="block text-white ">Add Admin Name</span>
           <input
             className="w-full "
             type="text"
@@ -139,7 +141,7 @@ export default function Admins() {
           />
         </label>
         <label className="mt-3 block">
-          <span className="block dark:text-white">Add Admin Email</span>
+          <span className="block text-white">Add Admin Email</span>
           <input
             className="w-full"
             type="email"
@@ -187,43 +189,48 @@ export default function Admins() {
               />
             </svg>
           </div>
-          <h2 className="dark:text-white mt-2 text-center font-semibold ">
-            Data Is Coming ....
-          </h2>
+          <span className="block text-center dark:text-white text-xl">
+            Loading...
+          </span>
         </div>
       ) : (
-        <table className="gap-10 my-10 w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-slate-500 dark:bg-gray-800 text-white">
-              <th className="p-2">Name</th>
-              <th className="p-2">Email</th>
-              <th className="p-2">Action</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {adminData.map((data) => (
-              <tr
-                key={data._id}
-                className="border-b-2 bg-slate-300 dark:bg-gray-600 p-5"
-              >
-                <td className="p-2 dark:text-white">{data.name}</td>
-                <td className="p-2 dark:text-white">
-                  {data.email.slice(0, 15) + "..."}
-                </td>
-                <td className="p-2">
-                  <button
-                    className="bg-red-600 text-white p-2 rounded-md"
-                    onClick={() => handleRemove(data._id)}
-                    disabled={loading} // Disable button while removing
-                  >
-                    {loading ? "Removing..." : "Remove"}
-                  </button>
-                </td>
+        <div className="overflow-x-auto w-full mx-auto my-10">
+          <h2 className="text-center text-2xl mb-5 dark:text-white font-semibold">
+            All Admins
+          </h2>
+          <table className="min-w-full border-collapse bg-white dark:bg-gray-800 shadow-lg">
+            <thead className="bg-primary dark:bg-gray-700 text-white">
+              <tr>
+                <th className="py-3 px-4 text-left">SL</th>
+                <th className="py-3 px-4 text-left">Name</th>
+                <th className="py-3 px-4 text-left">Email</th>
+                <th className="py-3 px-4 text-center">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {adminData?.map((admin, index) => (
+                <tr
+                  key={admin._id}
+                  className="hover:bg-gray-100 dark:hover:bg-gray-700 border-b dark:border-gray-700"
+                >
+                  <td className="py-2 px-4 text-left font-medium">
+                    {index + 1}
+                  </td>
+                  <td className="py-2 px-4">{admin.name}</td>
+                  <td className="py-2 px-4">{admin.email}</td>
+                  <td className="py-2 px-4 text-center">
+                    <button
+                      className="btn btn-xs bg-red-600 text-white py-1 px-2 rounded hover:bg-red-700 transition"
+                      onClick={() => handleRemove(admin._id)}
+                    >
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

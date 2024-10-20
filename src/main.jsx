@@ -13,15 +13,15 @@ import AddProducts from "./Pages/AddProducts/AddProducts.jsx";
 import AllProducts from "./Pages/AllProducts/AllProducts.jsx";
 import AddCatagories from "./Pages/AddCatagories/AddCatagories.jsx";
 import ReviewRequest from "./Pages/Review/ReviewRequest.jsx";
-import Settings from "./Pages/Settings/Settings.jsx";
-import AdminUser from "./Pages/User/AdminUser.jsx";
+import Settings from "./Pages/Settings/Settings.jsx"; 
 import CompetedOrders from "./Pages/Orders/CompetedOrders.jsx";
 import RunningOrders from "./Pages/Orders/RunningOrders.jsx";
 import CustomerMassage from "./Pages/CustomerMassage/CustomerMassage.jsx";
+import Admins from "./Pages/Admins.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <App />, 
     children: [
       {
         path: "/",
@@ -58,14 +58,10 @@ const router = createBrowserRouter([
       {
         path: "/settings",
         element: <Privetroute> <Settings></Settings> </Privetroute>,
-      },
-      {
-        path: "/pages-setting",
-        element: <Privetroute> <Settings></Settings> </Privetroute>,
-      },
+      }, 
       {
         path: "/add-admin",
-        element: <Privetroute> <AdminUser></AdminUser> </Privetroute>,
+        element: <Privetroute> <Admins></Admins> </Privetroute>,
       },
       {
         path: "/login",
