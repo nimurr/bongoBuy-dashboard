@@ -19,6 +19,7 @@ import RunningOrders from "./Pages/Orders/RunningOrders.jsx";
 import CustomerMassage from "./Pages/CustomerMassage/CustomerMassage.jsx";
 import Admins from "./Pages/Admins.jsx";
 import ProductsDetails from "./Pages/AllProducts/ProductsDetails.jsx";
+import SliderImages from "./Pages/SliderImages/SliderImages.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: "/customer-message",
         element: <Privetroute> <CustomerMassage></CustomerMassage> </Privetroute>,
+      },
+      {
+        path: "/slider-images",
+        element: <Privetroute> <SliderImages></SliderImages> </Privetroute>,
       },
       {
         path: "/settings",

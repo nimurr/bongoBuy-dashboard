@@ -101,6 +101,7 @@ export default function AddProducts() {
     const data = { ...formData, uploadImages };
     await axios.post("http://localhost:5000/addProducts", data) 
     .then(res => {
+      console.log(res)
       toast.success("Product Add Successfully !!", {
         position: "top-right",
         autoClose: 3000,
@@ -142,7 +143,7 @@ export default function AddProducts() {
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Product Images
           </label>
-          <div className="grid grid-cols-2 gap-2 w-full items-center justify-center bg-grey-lighter">
+          <div className="w-full items-center justify-center bg-grey-lighter">
             <label className="w-full flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-sm tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-primary">
               <svg
                 className="w-8 h-8"

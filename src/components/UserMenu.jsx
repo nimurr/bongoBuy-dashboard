@@ -7,7 +7,7 @@ import { AuthContext } from "../AuthProvider/AuthProvider";
 export default function UserMenu() {
 
   const { logOut ,  user } = useContext(AuthContext);
-  console.log("user :",user?.email)
+  // console.log("user :",user?.email)
 
   const handleLogout = ()=>{
     logOut();

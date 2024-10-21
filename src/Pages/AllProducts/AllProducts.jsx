@@ -133,6 +133,7 @@ export default function AllProducts() {
                     dismissible
                     show={openModal}
                     onClose={() => setOpenModal(false)}
+                    className="bg-[#00000021] dark:text-white"
                   >
                     <Modal.Header>{product.name}</Modal.Header>
                     <Modal.Body>

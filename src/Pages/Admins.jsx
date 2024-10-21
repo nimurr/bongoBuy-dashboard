@@ -47,6 +47,7 @@ export default function Admins() {
         return res.json();
       })
       .then((result) => {
+        console.log(result)
         toast.success("Admin added successfully!", {
           position: "top-right",
           autoClose: 3000,
@@ -211,7 +212,8 @@ export default function Admins() {
               {adminData?.map((admin, index) => (
                 <tr
                   key={admin._id}
-                  className="hover:bg-gray-100 dark:hover:bg-gray-700 border-b dark:border-gray-700"
+                  className="hover:bg-gray-100 dark:hover:bg-gray-700
+                   border-b dark:border-gray-700 dark:text-white"
                 >
                   <td className="py-2 px-4 text-left font-medium">
                     {index + 1}

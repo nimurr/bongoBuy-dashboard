@@ -1,4 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
+import { SiSlides } from "react-icons/si";
 import { IoHomeOutline, IoSettingsOutline } from "react-icons/io5";
 import { 
   FaCartPlus,
@@ -119,6 +120,16 @@ export default function Navbar() {
                 <IoMdAddCircleOutline />
               </div>
               Add Catagories
+            </NavLink>
+
+            <NavLink
+              to={"/slider-images"}
+              className="my-1 flex gap-2 items-center font-semibold dark:text-white p-2"
+            >
+              <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
+                <SiSlides  />
+              </div>
+              Slider Images
             </NavLink>
 
             <NavLink

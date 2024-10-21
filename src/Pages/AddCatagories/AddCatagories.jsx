@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 
 export default function AddCategories() {
   const [uploadImage, setUploadImage] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
   const [categories, setCategories] = useState([]);
 
   // Fetch categories from backend on component load
@@ -27,10 +28,13 @@ export default function AddCategories() {
     if (!file) {
       return alert("File not uploaded");
     }
+
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "for_usering_e_Commarce");
     data.append("cloud_name", "nerob");
+
+    setLoading(true); // Set loading to true when upload starts
 
     try {
       const res = await axios.post(
@@ -51,6 +55,8 @@ export default function AddCategories() {
         progress: undefined,
         theme: "colored",
       });
+    } finally {
+      setLoading(false); // Set loading to false when upload is complete
     }
   };
 
@@ -80,7 +86,6 @@ export default function AddCategories() {
         formData
       );
       if (response.status === 200) {
-        alert("");
         toast.success("Category added successfully!", {
           position: "top-right",
           autoClose: 3000,
@@ -109,7 +114,6 @@ export default function AddCategories() {
       }
     } catch (error) {
       console.error("Error adding category:", error);
-      alert("");
       toast.error("An error occurred. Please try again later.", {
         position: "top-right",
         autoClose: 3000,
@@ -187,8 +191,9 @@ export default function AddCategories() {
         <input
           className="border-0 sm:min-w-48 w-full pr-20 my-4"
           type="text"
-          defaultValue={uploadImage ? uploadImage : ""}
+          value={loading ? "Uploading Image..." : uploadImage}
           placeholder={"Uploading Image URL ..."}
+          readOnly
         />
         <input
           className="border-0 sm:min-w-48 w-full pr-20 my-4"
@@ -196,7 +201,7 @@ export default function AddCategories() {
           name="categoryName"
           placeholder="Add Categories"
         />
-        <button className="p-2 text-center bg-primary text-white font-semibold border-0 w-full">
+        <button className="p-2 text-center bg-primary text-white font-semibold border-0 w-full" disabled={loading}>
           Add Categories
         </button>
       </form>
