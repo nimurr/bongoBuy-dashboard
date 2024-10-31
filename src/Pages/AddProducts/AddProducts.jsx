@@ -1,11 +1,18 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdDeleteForever } from "react-icons/md";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function AddProducts() { 
 
   const [uploadImages, setUploadImages] = useState([]);
+  const [categories , setCategories ] = useState([]);
+
+  useEffect(()=>{
+    axios.get('http://localhost:5000/all-categories')
+    .then(res => setCategories(res?.data))
+  },[])
+
 
   const handleImageChange = async (e) => {
     const files = e.target.files;
@@ -27,12 +34,12 @@ export default function AddProducts() {
       const file = files[i];
       const data = new FormData();
       data.append("file", file);
-      data.append("upload_preset", "for_usering_e_Commarce");
-      data.append("cloud_name", "nerob");
+      data.append("upload_preset", "ofkzimiz");
+      data.append("cloud_name", "dpigjffah");
 
       try {
         const res = await axios.post(
-          "https://api.cloudinary.com/v1_1/nerob/image/upload",
+          "https://api.cloudinary.com/v1_1/dpigjffah/image/upload",
           data
         );
         const uploadImageURL = res.data.secure_url;
@@ -214,10 +221,15 @@ export default function AddProducts() {
             <option value="" disabled>
               Select category
             </option>
-            <option value="T-shirt">T-shirt</option>
+            {
+              categories.map((cate , id)=> (
+                <option key={id} value={cate?.categoryName}>{cate?.categoryName}</option>
+              ))
+            }
+            {/* <option value="T-shirt">T-shirt</option>
             <option value="Shoes">Shoes</option>
             <option value="Accessories">Accessories</option>
-            <option value="Jeans">Jeans</option>
+            <option value="Jeans">Jeans</option> */}
           </select>
         </div>
 

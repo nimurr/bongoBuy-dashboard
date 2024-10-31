@@ -42,15 +42,17 @@ export default function Settings() {
       // color: form.color.value,
     };
 
-    console.log(formData)
+  
 
+    // ${settingData._id}
     try {
       const response = await axios.put(
-        `http://localhost:5000/site-settings/${settingData._id}`, // Use settingData._id directly
+        `http://localhost:5000/site-settings/671dc2460306f27afeae7f45`, // Use settingData._id directly
         formData
       ).then(res => {
+      
         if(res?.data ){
-          toast.success("Image upload failed !!", {
+          toast.success("Setting Update Successfully  !!", {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -60,6 +62,7 @@ export default function Settings() {
             progress: undefined,
             theme: "colored",
           });
+
         }
       })
       console.log("Update response:", response?.data);
@@ -80,7 +83,9 @@ export default function Settings() {
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Show a loading state
+    return <div className="h-[40vh] flex justify-center items-center">
+    <img className="w-32" src="https://res.cloudinary.com/nerob/image/upload/v1729153381/BongoBuy/vjrj5chnn35depdimlhs.gif" alt="" />
+  </div>; // Show a loading state
   }
 
   return (

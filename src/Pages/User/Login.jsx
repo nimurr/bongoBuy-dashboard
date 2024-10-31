@@ -12,10 +12,11 @@ export default function Login() {
   const [adminData, setAdminData] = useState(['nimurnerob404@gmail.com']);
 
   useEffect((e) => {
-    fetch("https://notion-expo-server.vercel.app/admins")
+    fetch("http://localhost:5000/all-admins")
       .then((res) => res.json())
       .then((result) => setAdminData(result.map((da) => da.email)));
   }, []);
+  
   console.log(adminData);
 
   const handleLoginWithGoogle = (e) => {

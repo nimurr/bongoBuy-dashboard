@@ -20,6 +20,8 @@ import CustomerMassage from "./Pages/CustomerMassage/CustomerMassage.jsx";
 import Admins from "./Pages/Admins.jsx";
 import ProductsDetails from "./Pages/AllProducts/ProductsDetails.jsx";
 import SliderImages from "./Pages/SliderImages/SliderImages.jsx";
+import CustomerMessageDetails from "./Pages/CustomerMassage/CustomerMessageDetails.jsx";
+import RaningOrderDetails from "./Pages/Orders/RaningOrderDetails.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -58,8 +60,16 @@ const router = createBrowserRouter([
         element: <Privetroute> <RunningOrders></RunningOrders> </Privetroute>,
       },
       {
+        path: "/running-order/:id",
+        element: <Privetroute> <RaningOrderDetails></RaningOrderDetails> </Privetroute>,
+      },
+      {
         path: "/customer-message",
         element: <Privetroute> <CustomerMassage></CustomerMassage> </Privetroute>,
+      },
+      {
+        path: "/customer-message/:id",
+        element: <Privetroute> <CustomerMessageDetails></CustomerMessageDetails> </Privetroute>,
       },
       {
         path: "/slider-images",

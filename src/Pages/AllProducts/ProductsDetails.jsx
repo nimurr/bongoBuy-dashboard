@@ -4,18 +4,26 @@ import { MdDeleteForever } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
-export default function AddProducts() {
-  const { id } = useParams();
-  const [uploadImages, setUploadImages] = useState([]);
 
+export default function ProductsDetails() {
+
+
+  const { id } = useParams();
+
+  console.log(id)
+
+  const [uploadImages, setUploadImages] = useState([]);
   const [product, setProduct] = useState([]);
   console.log(product)
+
   useEffect(() => {
     axios.get(`http://localhost:5000/addProducts/${id}`).then((res) => {
-      setProduct(res?.data[0]); // Access the first product object directly
+      setProduct(res?.data); // Access the first product object directly
       setFormData(res?.data[0]); // Set initial form data from the response
     });
   }, [id]);
+
+
 
   const handleImageChange = async (e) => {
     const files = e.target.files;
@@ -129,6 +137,14 @@ export default function AddProducts() {
     setUploadImages([]);
   };
 
+  const [categories , setCategories ] = useState([]);
+
+  useEffect(()=>{
+    axios.get('http://localhost:5000/all-categories')
+    .then(res => setCategories(res?.data))
+  },[])
+
+
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md dark:bg-gray-800">
       <ToastContainer />
@@ -164,7 +180,7 @@ export default function AddProducts() {
             </label>
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
-            {formData.uploadImages?.map((image, idx) => (
+            {product?.uploadImages?.map((image, idx) => (
               <div key={idx} className="relative">
                 <img className="w-28" src={image} alt={`Uploaded ${idx}`} />
                 <button
@@ -187,7 +203,7 @@ export default function AddProducts() {
           <input
             type="text"
             name="pName"
-            value={formData.pName}
+            value={product?.name}
             onChange={handleInputChange}
             className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300"
             placeholder="Enter product name"
@@ -201,17 +217,18 @@ export default function AddProducts() {
           </label>
           <select
             name="category"
-            value={formData.category}
+            value={product?.category}
             onChange={handleInputChange}
             className="mt-1 block sm:w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300"
           >
             <option value="" disabled>
               Select category
             </option>
-            <option value="T-shirt">T-shirt</option>
-            <option value="Shoes">Shoes</option>
-            <option value="Accessories">Accessories</option>
-            <option value="Jeans">Jeans</option>
+            {
+              categories.map((cate , id)=> (
+                <option key={id} defaultValue={cate?.categoryName}>{cate?.categoryName}</option>
+              ))
+            }
           </select>
         </div>
 
@@ -223,7 +240,7 @@ export default function AddProducts() {
           <input
             type="number"
             name="quantity"
-            value={formData.quantity}
+            value={product?.quantity}
             onChange={handleInputChange}
             className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300"
             placeholder="Enter quantity"
@@ -238,7 +255,7 @@ export default function AddProducts() {
           <input
             type="text"
             name="pCode"
-            value={formData.pCode}
+            value={product?.pCode}
             onChange={handleInputChange}
             className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300"
             placeholder="Enter product code"
@@ -253,7 +270,7 @@ export default function AddProducts() {
           <input
             type="number"
             name="rPrice"
-            value={formData.rPrice}
+            value={product?.rPrice}
             onChange={handleInputChange}
             className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300"
             placeholder="Enter retail price"
@@ -268,7 +285,7 @@ export default function AddProducts() {
           <input
             type="number"
             name="discount"
-            value={formData.discount}
+            value={product?.discount}
             onChange={handleInputChange}
             className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300"
             placeholder="Enter discount"
@@ -280,7 +297,7 @@ export default function AddProducts() {
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Sizes
           </label>
-          {formData.sizes.map((size, idx) => (
+          {product?.sizes?.map((size, idx) => (
             <div key={idx} className="flex gap-2 mb-2">
               <input
                 type="text"
@@ -289,7 +306,7 @@ export default function AddProducts() {
                 className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300"
                 placeholder="Enter size"
               />
-              {formData.sizes.length > 1 && (
+              {product?.sizes.length > 1 && (
                 <button
                   type="button"
                   onClick={() => removeSizeField(idx)}
@@ -316,7 +333,7 @@ export default function AddProducts() {
           </label>
           <textarea
             name="description"
-            value={formData.description}
+            value={product?.description}
             onChange={handleInputChange}
             rows="4"
             className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300"
@@ -337,3 +354,6 @@ export default function AddProducts() {
     </div>
   );
 }
+ 
+
+ 

@@ -31,14 +31,14 @@ export default function AddCategories() {
 
     const data = new FormData();
     data.append("file", file);
-    data.append("upload_preset", "for_usering_e_Commarce");
-    data.append("cloud_name", "nerob");
+    data.append("upload_preset", "ofkzimiz");
+    data.append("cloud_name", "dpigjffah");
 
     setLoading(true); // Set loading to true when upload starts
 
     try {
       const res = await axios.post(
-        "https://api.cloudinary.com/v1_1/nerob/image/upload",
+        "https://api.cloudinary.com/v1_1/dpigjffah/image/upload",
         data
       );
       const uploadImageURL = res.data.secure_url;

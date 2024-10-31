@@ -1,15 +1,33 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdDeleteForever } from "react-icons/md";
 import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css'; // Import toastify CSS
+import "react-toastify/dist/ReactToastify.css"; // Import toastify CSS
 
 export default function SliderImages() {
   const [uploadImages, setUploadImages] = useState([]);
   const [loading, setLoading] = useState(false); // Loading state
+  
 
+  // Fetch default images on component mount
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/slider-images/67162048ab387caf55c21e2b"
+        );
+        setUploadImages(response.data.images || []);
+      } catch (error) {
+        console.error("Error fetching images:", error);
+        toast.error("Failed to load images.");
+      }
+    };
+
+    fetchImages();
+  }, []);
+
+  // Handle image upload
   const handleImageChange = async (e) => {
-
     const files = e.target.files;
     if (files.length === 0) {
       return toast.error("No files uploaded", {
@@ -26,17 +44,17 @@ export default function SliderImages() {
 
     setLoading(true); // Set loading to true when upload starts
     const uploadedImages = [];
-    
+
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const data = new FormData();
       data.append("file", file);
-      data.append("upload_preset", "for_usering_e_Commarce");
-      data.append("cloud_name", "nerob");
+      data.append("upload_preset", "ofkzimiz");
+      data.append("cloud_name", "dpigjffah");
 
       try {
         const res = await axios.post(
-          "https://api.cloudinary.com/v1_1/nerob/image/upload",
+          "https://api.cloudinary.com/v1_1/dpigjffah/image/upload",
           data
         );
         const uploadImageURL = res.data.secure_url;
@@ -48,15 +66,17 @@ export default function SliderImages() {
         return;
       }
     }
-    setUploadImages((prevImages) => [...prevImages, ...uploadedImages]);
+    setUploadImages(uploadedImages); // Replace the old images with the newly uploaded ones
     setLoading(false); // Stop loading when upload finishes
   };
 
+  // Remove image from the list
   const removeImage = (index) => {
     const newImages = uploadImages.filter((_, idx) => idx !== index);
     setUploadImages(newImages);
   };
 
+  // Handle submitting slider images
   const handleSliderImage = () => {
     if (uploadImages.length === 0) {
       return toast.error("Please upload images before submitting.", {
@@ -71,8 +91,9 @@ export default function SliderImages() {
       });
     }
 
-    axios
-      .put("http://localhost:5000/slider-images/67162048ab387caf55c21e2b", { images: uploadImages })
+    axios.put("http://localhost:5000/slider-images/671dc0ed0306f27afeae7f44", {
+        images: uploadImages,
+      })
       .then((response) => {
         console.log("Images submitted successfully", response);
         toast.success("Images submitted successfully!", {
@@ -104,7 +125,19 @@ export default function SliderImages() {
   return (
     <div>
       <ToastContainer />
-      <h2 className="text-3xl font-semibold dark:text-white mb-5">Slider Images</h2>
+      <h2 className="text-3xl font-semibold dark:text-white mb-5">
+        Slider Images
+      </h2>
+      
+      {loading && (
+        <div className="h-[20vh] flex justify-center items-center">
+          <img
+            className="w-32"
+            src="https://res.cloudinary.com/nerob/image/upload/v1729153381/BongoBuy/vjrj5chnn35depdimlhs.gif"
+            alt="Loading..."
+          />
+        </div>
+      )}
 
       <div className="w-full items-center justify-center bg-grey-lighter">
         <label className="w-full flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-sm tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-primary">
@@ -126,15 +159,19 @@ export default function SliderImages() {
         </label>
       </div>
 
-      {/* Show loading message while images are being uploaded */}
-      {loading && <p>Uploading images, please wait...</p>}
+      {!uploadImages.length && !loading ? (
+        <h2 className="my-5 text-red-600">No Images Uploaded</h2>
+      ) : null}
 
-      {!uploadImages.length && !loading ? <h2>No Images Uploaded</h2> : null}
       {/* Display uploaded images */}
       <div className="my-5 flex flex-wrap gap-2">
         {uploadImages.map((image, idx) => (
           <div key={idx} className="relative">
-            <img className="min-w-36 max-w-96" src={image} alt={`Uploaded ${idx}`} />
+            <img
+              className="min-w-36 max-w-96"
+              src={image}
+              alt={`Uploaded ${idx}`}
+            />
             <button
               type="button"
               onClick={() => removeImage(idx)}

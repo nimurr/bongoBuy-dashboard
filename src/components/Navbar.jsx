@@ -10,7 +10,45 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import {  MdStars } from "react-icons/md";
 import { TbShoppingCartCheck } from "react-icons/tb";
 import { RiMessage2Fill } from "react-icons/ri";
+import { useEffect, useState } from "react";
+import axios from "axios";
 export default function Navbar() {
+
+  const [runningOrder ,setRunningOrder] = useState(0);
+  const [compleatOrder ,setCompleatOrder] = useState(0)
+  const [customerMessage ,setCustomerMessage] = useState(0)
+  const [reviewRequest ,setReviewRequest] = useState(0)
+  const [allProducts ,setAllProducts] = useState(0)
+
+
+  useEffect(()=>{
+    axios.get('http://localhost:5000/customer-orders')
+    .then(res => setRunningOrder(res.data?.filter(item => item?.orderStatus !== "Completed").length))
+  
+    axios.get('http://localhost:5000/customer-orders')
+    .then(res => setCompleatOrder(res.data?.filter(item => item?.orderStatus == "Completed").length))
+  
+  
+    axios.get('http://localhost:5000/customer-message')
+    .then(res => setCustomerMessage(res.data?.length))
+  
+    axios.get('http://localhost:5000/allReviews')
+    .then(res => setReviewRequest(res.data?.length))
+  
+  
+    axios.get('http://localhost:5000/addProducts')
+    .then(res => setAllProducts(res.data?.length))
+  
+  
+  
+  
+  
+  
+  },[])
+
+  console.log(compleatOrder)
+
+
   return (
     <div className="h-[105vh] relative overflow-y-scroll w-full flex flex-col justify-between bg-white z-50 dark:bg-[#111827] border-r-2 border-gray-300 dark:border-gray-800 px-2 py-6">
       {/* top nav item  */}
@@ -40,7 +78,7 @@ export default function Navbar() {
                 Running Orders{" "}
               </div>
               <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
-                5
+                {runningOrder ? runningOrder : 0}
               </span>
             </NavLink>
             <NavLink
@@ -54,7 +92,7 @@ export default function Navbar() {
                 Completed Orders{" "}
               </div>
               <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
-                99+
+                {compleatOrder ? compleatOrder  : 0}
               </span>
             </NavLink>
 
@@ -69,7 +107,7 @@ export default function Navbar() {
                 Customer Message{" "}
               </div>
               <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
-                99+
+               {customerMessage ? customerMessage : 0}
               </span>
             </NavLink>
             <NavLink
@@ -83,7 +121,7 @@ export default function Navbar() {
                 Review Request{" "}
               </div>
               <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
-                10+
+                {reviewRequest ? reviewRequest : 0}
               </span>
             </NavLink>
 
@@ -98,7 +136,7 @@ export default function Navbar() {
                 All Products{" "}
               </div>
               <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
-                99+
+                {allProducts ? allProducts : 0}
               </span>
             </NavLink>
 
