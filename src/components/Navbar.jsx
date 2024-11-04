@@ -7,7 +7,7 @@ import {
   FaUserPlus,
 } from "react-icons/fa6";
 import { IoMdAddCircleOutline } from "react-icons/io";
-import {  MdStars } from "react-icons/md";
+import {  MdOutlineSecurity, MdStars } from "react-icons/md";
 import { TbShoppingCartCheck } from "react-icons/tb";
 import { RiMessage2Fill } from "react-icons/ri";
 import { useEffect, useState } from "react";
@@ -38,11 +38,6 @@ export default function Navbar() {
   
     axios.get('http://localhost:5000/addProducts')
     .then(res => setAllProducts(res.data?.length))
-  
-  
-  
-  
-  
   
   },[])
 
@@ -185,7 +180,7 @@ export default function Navbar() {
               className="my-1 flex gap-2 items-center font-semibold dark:text-white p-2"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
-                <FaUserPlus />
+                <MdOutlineSecurity />
               </div>
               Admins
             </NavLink>

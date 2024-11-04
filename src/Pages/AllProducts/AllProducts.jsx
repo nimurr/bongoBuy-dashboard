@@ -6,8 +6,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { IoSearch } from "react-icons/io5";
 
-export default function AllProducts() {
-  const [openModal, setOpenModal] = useState(false);
+export default function AllProducts() { 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [products, setProducts] = useState([]);
@@ -17,7 +16,7 @@ export default function AllProducts() {
   useEffect(() => {
     axios
       .get("http://localhost:5000/addProducts")
-      .then((res) => setProducts(res.data))
+      .then((res) => setProducts(res?.data.reverse()))
       .catch((error) => console.error("Error fetching products:", error));
   }, []);
 

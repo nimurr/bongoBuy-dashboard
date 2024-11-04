@@ -142,7 +142,11 @@ export default function ProductsDetails() {
   useEffect(()=>{
     axios.get('http://localhost:5000/all-categories')
     .then(res => setCategories(res?.data))
+
+
+
   },[])
+
 
 
   return (

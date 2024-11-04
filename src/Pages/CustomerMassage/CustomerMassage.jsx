@@ -10,7 +10,7 @@ export default function CustomerMassage() {
 
   useEffect(()=>{
     axios.get('http://localhost:5000/customer-message')
-    .then(res => setMessage(res?.data))
+    .then(res => setMessage(res?.data.reverse()))
   },[])
 
   console.log(message)
@@ -23,6 +23,7 @@ export default function CustomerMassage() {
       <div className="overflow-x-auto rounded-none">
         <Table hoverable className="rounded-none min-w-[800px]">
           <Table.Head>
+            <Table.HeadCell>SL</Table.HeadCell>
             <Table.HeadCell>Customer name</Table.HeadCell>
             <Table.HeadCell>Email</Table.HeadCell>
             <Table.HeadCell>Phone</Table.HeadCell>
@@ -33,6 +34,7 @@ export default function CustomerMassage() {
             {
               message?.map((item, idx )=> 
                 <Table.Row key={idx} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+              <Table.Cell>{++idx}</Table.Cell>
               <Table.Cell>{item?.name}</Table.Cell>
               <Table.Cell>{item?.email}</Table.Cell>
               <Table.Cell>{item?.phone}</Table.Cell>
