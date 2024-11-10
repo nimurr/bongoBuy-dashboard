@@ -108,7 +108,7 @@ export default function AllProducts() {
                     to={`/all-products/${product?._id}`}
                     className="py-2 px-5 mr-2 bg-blue-600 rounded text-white"
                   >
-                    Edit
+                    View Product
                   </Link>
                   <button
                     onClick={() => deleteProduct(product._id)}

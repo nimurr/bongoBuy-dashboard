@@ -21,7 +21,7 @@ export default function StockDetails() {
     axios.get("http://localhost:5000/customer-orders").then((res) => {
       const orders = res.data || [];
       setRunningOrder(
-        orders.filter((item) => item?.orderStatus !== "Completed").length
+        orders.filter((item) => item?.orderStatus !== "Completed" && item?.orderStatus !== "Cancel").length
       );
       setCompleatOrder(
         orders.filter((item) => item?.orderStatus === "Completed")

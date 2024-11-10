@@ -152,9 +152,7 @@ export default function ProductsDetails() {
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md dark:bg-gray-800">
       <ToastContainer />
-      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-white">
-        Edit Product
-      </h2>
+ 
 
       <form onSubmit={handleSubmit}>
         {/* Product Images */}
@@ -162,7 +160,7 @@ export default function ProductsDetails() {
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Product Images
           </label>
-          <div className="w-full items-center justify-center bg-grey-lighter">
+          {/* <div className="w-full items-center justify-center bg-grey-lighter">
             <label className="w-full flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-sm tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-primary">
               <svg
                 className="w-8 h-8"
@@ -182,18 +180,18 @@ export default function ProductsDetails() {
                 multiple // Allow multiple file selection
               />
             </label>
-          </div>
+          </div> */}
           <div className="mt-4 flex flex-wrap gap-2">
             {product?.uploadImages?.map((image, idx) => (
               <div key={idx} className="relative">
                 <img className="w-28" src={image} alt={`Uploaded ${idx}`} />
-                <button
+                {/* <button
                   type="button"
                   onClick={() => removeImage(idx)}
                   className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
                 >
                   <MdDeleteForever className="text-xl" />
-                </button>
+                </button> */}
               </div>
             ))}
           </div>
@@ -310,7 +308,7 @@ export default function ProductsDetails() {
                 className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300"
                 placeholder="Enter size"
               />
-              {product?.sizes.length > 1 && (
+              {/* {product?.sizes.length > 1 && (
                 <button
                   type="button"
                   onClick={() => removeSizeField(idx)}
@@ -318,16 +316,16 @@ export default function ProductsDetails() {
                 >
                   Remove
                 </button>
-              )}
+              )} */}
             </div>
           ))}
-          <button
+          {/* <button
             type="button"
             onClick={addSizeField}
             className="bg-blue-500 text-white px-3 py-1 rounded-md text-sm mt-2"
           >
             Add Size
-          </button>
+          </button> */}
         </div>
 
         {/* Description */}
@@ -346,14 +344,14 @@ export default function ProductsDetails() {
         </div>
 
         {/* Submit Button */}
-        <div className="mt-6">
+        {/* <div className="mt-6">
           <button
             type="submit"
             className="w-full py-2 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75"
           >
             Update Product
           </button>
-        </div>
+        </div> */}
       </form>
     </div>
   );
