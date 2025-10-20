@@ -62,7 +62,7 @@ export default function StockDetails() {
   return (
     <div>
       <div className="mb-10">
-        <h2 className="text-3xl font-bold mb-5 dark:text-white flex justify-between">
+        <h2 className="text-3xl font-bold mb-5 text-gray-800 dark:text-white flex justify-between">
           Stock Amount & Details{" "}
         </h2>
         <div className="grid xl:grid-cols-3 sm:grid-cols-2  lg:gap-4 gap-2">
@@ -107,7 +107,7 @@ export default function StockDetails() {
       </div>
 
       <div className="mb-10">
-        <h2 className="text-3xl font-bold mb-5 dark:text-white flex justify-between">
+        <h2 className="text-3xl font-bold mb-5 text-gray-800 dark:text-white flex justify-between">
           Orders Details{" "}
         </h2>
         <div className="grid xl:grid-cols-3 sm:grid-cols-2  lg:gap-4 gap-2">

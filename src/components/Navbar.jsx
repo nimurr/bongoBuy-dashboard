@@ -48,7 +48,7 @@ export default function Navbar() {
     <div className="h-[100vh] relative overflow-y-auto w-full flex flex-col justify-between bg-white z-50 dark:bg-[#111827] border-r border-gray-300 dark:border-gray-800 px-2 py-6">
       {/* top nav item  */}
       <div className="">
-        <Link to={"/"} className="text-4xl font-extrabold dark:text-white">
+        <Link to={"/"} className="text-4xl font-extrabold text-gray-800 dark:text-white">
           Bongo<span className="text-primary">Buy</span>
         </Link>
         <div className="mt-5">

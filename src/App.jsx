@@ -68,7 +68,7 @@ function App() {
           <UserMenu></UserMenu>
           <button
             onClick={handleShow}
-            className="text-2xl dark:text-white absolute lg:hidden left-4 top-7"
+            className="text-2xl dark:text-white text-gray-800 absolute lg:hidden left-4 top-7"
           >
             <RiMenu2Line />
           </button>

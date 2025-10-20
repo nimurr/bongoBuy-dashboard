@@ -4,10 +4,10 @@ body{
 }
 .active{
     background: #0dc043;
-    color:#fff;
+    color:#fff !important;
 }
 .active div{
-    color: #fff;
+    color: #fff !important;
 }
 
 
