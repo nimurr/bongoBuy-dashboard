@@ -3,17 +3,17 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./Pages/Home.jsx"; 
-import Profile from "./Pages/User/Profile.jsx"; 
+import Home from "./Pages/Home.jsx";
+import Profile from "./Pages/User/Profile.jsx";
 import Login from "./Pages/User/Login.jsx";
-import Register from "./Pages/User/Register.jsx";  
+import Register from "./Pages/User/Register.jsx";
 import AuthProvider from "./AuthProvider/AuthProvider.jsx";
-import Privetroute from "./PrivetRoute/PrivetRoute.jsx"; 
+import Privetroute from "./PrivetRoute/PrivetRoute.jsx";
 import AddProducts from "./Pages/AddProducts/AddProducts.jsx";
 import AllProducts from "./Pages/AllProducts/AllProducts.jsx";
 import AddCatagories from "./Pages/AddCatagories/AddCatagories.jsx";
 import ReviewRequest from "./Pages/Review/ReviewRequest.jsx";
-import Settings from "./Pages/Settings/Settings.jsx"; 
+import Settings from "./Pages/Settings/Settings.jsx";
 import CompetedOrders from "./Pages/Orders/CompetedOrders.jsx";
 import RunningOrders from "./Pages/Orders/RunningOrders.jsx";
 import CustomerMassage from "./Pages/CustomerMassage/CustomerMassage.jsx";
@@ -25,63 +25,63 @@ import RaningOrderDetails from "./Pages/Orders/RaningOrderDetails.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />, 
+    element: <App />,
     children: [
       {
         path: "/",
-        element: <Privetroute> <Home></Home> </Privetroute>,
+        element: <Home></Home>
       },
       {
         path: "/add-products",
-        element: <Privetroute> <AddProducts></AddProducts> </Privetroute>,
+        element:   <AddProducts></AddProducts>  ,
       },
       {
         path: "/all-products",
-        element: <Privetroute> <AllProducts></AllProducts> </Privetroute>,
+        element:   <AllProducts></AllProducts>  ,
       },
       {
         path: "/all-products/:id",
-        element: <Privetroute> <ProductsDetails></ProductsDetails> </Privetroute>,
+        element:   <ProductsDetails></ProductsDetails>  ,
       },
       {
         path: "/add-catagories",
-        element: <Privetroute> <AddCatagories></AddCatagories> </Privetroute>,
+        element:   <AddCatagories></AddCatagories>  ,
       },
       {
         path: "/review-request",
-        element: <Privetroute> <ReviewRequest></ReviewRequest> </Privetroute>,
+        element:   <ReviewRequest></ReviewRequest>  ,
       },
       {
         path: "/completed-order",
-        element: <Privetroute> <CompetedOrders></CompetedOrders> </Privetroute>,
+        element:   <CompetedOrders></CompetedOrders>  ,
       },
       {
         path: "/running-order",
-        element: <Privetroute> <RunningOrders></RunningOrders> </Privetroute>,
+        element:   <RunningOrders></RunningOrders>  ,
       },
       {
         path: "/running-order/:id",
-        element: <Privetroute> <RaningOrderDetails></RaningOrderDetails> </Privetroute>,
+        element:   <RaningOrderDetails></RaningOrderDetails>  ,
       },
       {
         path: "/customer-message",
-        element: <Privetroute> <CustomerMassage></CustomerMassage> </Privetroute>,
+        element:   <CustomerMassage></CustomerMassage>  ,
       },
       {
         path: "/customer-message/:id",
-        element: <Privetroute> <CustomerMessageDetails></CustomerMessageDetails> </Privetroute>,
+        element:   <CustomerMessageDetails></CustomerMessageDetails>  ,
       },
       {
         path: "/slider-images",
-        element: <Privetroute> <SliderImages></SliderImages> </Privetroute>,
+        element:   <SliderImages></SliderImages>  ,
       },
       {
         path: "/settings",
-        element: <Privetroute> <Settings></Settings> </Privetroute>,
-      }, 
+        element:   <Settings></Settings>  ,
+      },
       {
         path: "/add-admin",
-        element: <Privetroute> <Admins></Admins> </Privetroute>,
+        element:   <Admins></Admins>  ,
       },
       {
         path: "/login",
@@ -93,7 +93,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <Privetroute><Profile></Profile></Privetroute>,
+        element:  <Profile></Profile> ,
       }
     ],
   },

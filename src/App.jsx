@@ -45,7 +45,7 @@ function App() {
   }
 
   return (
-    <div className="flex bg-gray-100 items-center w-full dark:bg-[#111827] h-[100vh] fixed">
+    <div className="flex bg-gray-100  items-center w-full dark:bg-[#111827] h-[100vh] fixed">
       {/* left side navbar  */}
       <div
         className={`lg:w-3/12 xl:w-2/12 md:w-4/12 w-10/12 lg:ml-0 ${
@@ -54,7 +54,7 @@ function App() {
       >
         <button
           onClick={handleShow}
-          className="text-4xl z-[99999] dark:text-gray-200  dark:bg-gray-700 rounded absolute lg:hidden right-5 top-6"
+          className="text-4xl z-[99999] dark:text-gray-200  dark:bg-gray-700 rounded  absolute lg:hidden right-5 top-6"
         >
           <IoMdClose className="" />
         </button>

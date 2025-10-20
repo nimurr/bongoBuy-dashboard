@@ -1,51 +1,51 @@
 import { Link, NavLink } from "react-router-dom";
 import { SiSlides } from "react-icons/si";
 import { IoHomeOutline, IoSettingsOutline } from "react-icons/io5";
-import { 
+import {
   FaCartPlus,
   FaProductHunt,
   FaUserPlus,
 } from "react-icons/fa6";
 import { IoMdAddCircleOutline } from "react-icons/io";
-import {  MdOutlineSecurity, MdStars } from "react-icons/md";
+import { MdOutlineSecurity, MdStars } from "react-icons/md";
 import { TbShoppingCartCheck } from "react-icons/tb";
 import { RiMessage2Fill } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import axios from "axios";
 export default function Navbar() {
 
-  const [runningOrder ,setRunningOrder] = useState(0);
-  const [compleatOrder ,setCompleatOrder] = useState(0)
-  const [customerMessage ,setCustomerMessage] = useState(0)
-  const [reviewRequest ,setReviewRequest] = useState(0)
-  const [allProducts ,setAllProducts] = useState(0)
+  const [runningOrder, setRunningOrder] = useState(0);
+  const [compleatOrder, setCompleatOrder] = useState(0)
+  const [customerMessage, setCustomerMessage] = useState(0)
+  const [reviewRequest, setReviewRequest] = useState(0)
+  const [allProducts, setAllProducts] = useState(0)
 
 
-  useEffect(()=>{
+  useEffect(() => {
     axios.get('http://localhost:5000/customer-orders')
-    .then(res => setRunningOrder(res.data?.filter(item => item?.orderStatus !== "Completed").length))
-  
+      .then(res => setRunningOrder(res.data?.filter(item => item?.orderStatus !== "Completed").length))
+
     axios.get('http://localhost:5000/customer-orders')
-    .then(res => setCompleatOrder(res.data?.filter(item => item?.orderStatus == "Completed").length))
-  
-  
+      .then(res => setCompleatOrder(res.data?.filter(item => item?.orderStatus == "Completed").length))
+
+
     axios.get('http://localhost:5000/customer-message')
-    .then(res => setCustomerMessage(res.data?.length))
-  
+      .then(res => setCustomerMessage(res.data?.length))
+
     axios.get('http://localhost:5000/allReviews')
-    .then(res => setReviewRequest(res.data?.length))
-  
-  
+      .then(res => setReviewRequest(res.data?.length))
+
+
     axios.get('http://localhost:5000/addProducts')
-    .then(res => setAllProducts(res.data?.length))
-  
-  },[])
+      .then(res => setAllProducts(res.data?.length))
+
+  }, [])
 
   console.log(compleatOrder)
 
 
   return (
-    <div className="h-[105vh] relative overflow-y-scroll w-full flex flex-col justify-between bg-white z-50 dark:bg-[#111827] border-r-2 border-gray-300 dark:border-gray-800 px-2 py-6">
+    <div className="h-[100vh] relative overflow-y-auto w-full flex flex-col justify-between bg-white z-50 dark:bg-[#111827] border-r border-gray-300 dark:border-gray-800 px-2 py-6">
       {/* top nav item  */}
       <div className="">
         <Link to={"/"} className="text-4xl font-extrabold dark:text-white">
@@ -55,7 +55,7 @@ export default function Navbar() {
           <ul className="">
             <NavLink
               to={"/"}
-              className="my-1 flex gap-2 items-center font-semibold dark:text-white p-2"
+              className="my-1 flex gap-2 items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <IoHomeOutline />
@@ -64,7 +64,7 @@ export default function Navbar() {
             </NavLink>
             <NavLink
               to={"/running-order"}
-              className="my-1 flex gap-2 items-center justify-between font-semibold dark:text-white p-2"
+              className="my-1 flex gap-2 items-center justify-between font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="flex gap-2 items-center">
                 <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -78,7 +78,7 @@ export default function Navbar() {
             </NavLink>
             <NavLink
               to={"/completed-order"}
-              className="my-1 flex gap-2 justify-between items-center font-semibold dark:text-white p-2"
+              className="my-1 flex gap-2 justify-between items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="flex gap-2 items-center">
                 <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -87,13 +87,13 @@ export default function Navbar() {
                 Completed Orders{" "}
               </div>
               <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
-                {compleatOrder ? compleatOrder  : 0}
+                {compleatOrder ? compleatOrder : 0}
               </span>
             </NavLink>
 
             <NavLink
               to={"/customer-message"}
-              className="my-1 flex gap-2 justify-between items-center font-semibold dark:text-white p-2"
+              className="my-1 flex gap-2 justify-between items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="flex gap-2 items-center">
                 <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -102,12 +102,12 @@ export default function Navbar() {
                 Customer Message{" "}
               </div>
               <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
-               {customerMessage ? customerMessage : 0}
+                {customerMessage ? customerMessage : 0}
               </span>
             </NavLink>
             <NavLink
               to={"/review-request"}
-              className="my-1 flex gap-2 justify-between items-center font-semibold dark:text-white p-2"
+              className="my-1 flex gap-2 justify-between items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="flex gap-2 items-center">
                 <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -122,7 +122,7 @@ export default function Navbar() {
 
             <NavLink
               to={"/all-products"}
-              className="my-1 flex gap-2 justify-between items-center font-semibold dark:text-white p-2"
+              className="my-1 flex gap-2 justify-between items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="flex gap-2 items-center">
                 <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -137,7 +137,7 @@ export default function Navbar() {
 
             <NavLink
               to={"/add-products"}
-              className="my-1 flex gap-2 items-center font-semibold dark:text-white p-2"
+              className="my-1 flex gap-2 items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <IoMdAddCircleOutline />
@@ -147,7 +147,7 @@ export default function Navbar() {
 
             <NavLink
               to={"/add-catagories"}
-              className="my-1 flex gap-2 items-center font-semibold dark:text-white p-2"
+              className="my-1 flex gap-2 items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <IoMdAddCircleOutline />
@@ -157,27 +157,27 @@ export default function Navbar() {
 
             <NavLink
               to={"/slider-images"}
-              className="my-1 flex gap-2 items-center font-semibold dark:text-white p-2"
+              className="my-1 flex gap-2 items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
-                <SiSlides  />
+                <SiSlides />
               </div>
               Slider Images
             </NavLink>
 
             <NavLink
               to={"/settings"}
-              className="my-1 flex gap-2 items-center font-semibold dark:text-white p-2"
+              className="my-1 flex gap-2 items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <IoSettingsOutline />
               </div>
               Settings
-            </NavLink> 
+            </NavLink>
 
             <NavLink
               to={"/add-admin"}
-              className="my-1 flex gap-2 items-center font-semibold dark:text-white p-2"
+              className="my-1 flex gap-2 items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <MdOutlineSecurity />
