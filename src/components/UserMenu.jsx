@@ -24,8 +24,9 @@ export default function UserMenu() {
 
       {/*======================== right side user information ==========================*/}
       <div className="flex items-center sm:gap-4 gap-2">
-        <Flowbite className=" ">
-          <DarkThemeToggle></DarkThemeToggle>
+        <Flowbite className="dark:text-white tex-xl text-gray-600">
+          {/* i want to set default value for icons */}
+          {/* <DarkThemeToggle defaultChecked></DarkThemeToggle> */}
         </Flowbite>
 
         <Dropdown
@@ -41,13 +42,13 @@ export default function UserMenu() {
             />
           }
         >
-          <Dropdown.Item className="flex items-center gap-3 hover:text-white hover:bg-green-500" onClick={handleLogout}>
-            <FaArrowRightFromBracket className="text-xl" /> Log Out
-          </Dropdown.Item>
           <Dropdown.Item className="flex text-gray-800 hover:text-white hover:bg-green-500 dark:text-white items-center gap-3">
             <Link className="flex items-center gap-2" to="/profile">
               <CiUser className="text-xl" />Profile
             </Link>
+          </Dropdown.Item>
+          <Dropdown.Item className="flex items-center gap-3 hover:text-white hover:bg-green-500" onClick={handleLogout}>
+            <FaArrowRightFromBracket className="text-xl" /> Log Out
           </Dropdown.Item>
         </Dropdown>
       </div>

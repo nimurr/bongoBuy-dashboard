@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import UserMenu from "./components/UserMenu";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { RiMenu2Line } from "react-icons/ri";
 import { AuthContext } from "./AuthProvider/AuthProvider";
@@ -14,6 +14,12 @@ function App() {
   const handleShow = () => {
     setShow(!show);
   };
+
+  useEffect(() => { 
+
+    localStorage.setItem("flowbite-theme-mode", "dark");
+
+  }, []);
 
   if (loading) {
     return (
@@ -48,9 +54,8 @@ function App() {
     <div className="flex bg-gray-100  items-center w-full dark:bg-[#111827] h-[100vh] fixed">
       {/* left side navbar  */}
       <div
-        className={`lg:w-3/12 xl:w-2/12 md:w-4/12 w-10/12 lg:ml-0 ${
-          show ? "ml-0" : "-ml-[1000px]"
-        } absolute lg:relative h-[100vh] z-20 `}
+        className={`lg:w-3/12 xl:w-2/12 md:w-4/12 w-10/12 lg:ml-0 ${show ? "ml-0" : "-ml-[1000px]"
+          } absolute lg:relative h-[100vh] z-20 `}
       >
         <button
           onClick={handleShow}
