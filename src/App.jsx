@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { RiMenu2Line } from "react-icons/ri";
 import { AuthContext } from "./AuthProvider/AuthProvider";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const { loading } = useContext(AuthContext);
@@ -15,7 +16,7 @@ function App() {
     setShow(!show);
   };
 
-  useEffect(() => { 
+  useEffect(() => {
 
     localStorage.setItem("flowbite-theme-mode", "dark");
 
@@ -53,6 +54,7 @@ function App() {
   return (
     <div className="flex bg-gray-100  items-center w-full dark:bg-[#111827] h-[100vh] fixed">
       {/* left side navbar  */}
+      <ToastContainer autoClose={3000} theme="colored" position="top-right" />
       <div
         className={`lg:w-3/12 xl:w-2/12 md:w-4/12 w-10/12 lg:ml-0 ${show ? "ml-0" : "-ml-[1000px]"
           } absolute lg:relative h-[100vh] z-20 `}

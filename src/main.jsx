@@ -22,6 +22,8 @@ import ProductsDetails from "./Pages/AllProducts/ProductsDetails.jsx";
 import SliderImages from "./Pages/SliderImages/SliderImages.jsx";
 import CustomerMessageDetails from "./Pages/CustomerMassage/CustomerMessageDetails.jsx";
 import RaningOrderDetails from "./Pages/Orders/RaningOrderDetails.jsx";
+import { Provider } from "react-redux";
+import { store } from "./redux/store.js";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -29,59 +31,59 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home></Home>
+        element: <Privetroute> <Home></Home></Privetroute>
       },
       {
         path: "/add-products",
-        element:   <AddProducts></AddProducts>  ,
+        element: <AddProducts></AddProducts>,
       },
       {
         path: "/all-products",
-        element:   <AllProducts></AllProducts>  ,
+        element: <AllProducts></AllProducts>,
       },
       {
         path: "/all-products/:id",
-        element:   <ProductsDetails></ProductsDetails>  ,
+        element: <ProductsDetails></ProductsDetails>,
       },
       {
         path: "/add-catagories",
-        element:   <AddCatagories></AddCatagories>  ,
+        element: <AddCatagories></AddCatagories>,
       },
       {
         path: "/review-request",
-        element:   <ReviewRequest></ReviewRequest>  ,
+        element: <ReviewRequest></ReviewRequest>,
       },
       {
         path: "/completed-order",
-        element:   <CompetedOrders></CompetedOrders>  ,
+        element: <CompetedOrders></CompetedOrders>,
       },
       {
         path: "/running-order",
-        element:   <RunningOrders></RunningOrders>  ,
+        element: <RunningOrders></RunningOrders>,
       },
       {
         path: "/running-order/:id",
-        element:   <RaningOrderDetails></RaningOrderDetails>  ,
+        element: <RaningOrderDetails></RaningOrderDetails>,
       },
       {
         path: "/customer-message",
-        element:   <CustomerMassage></CustomerMassage>  ,
+        element: <CustomerMassage></CustomerMassage>,
       },
       {
         path: "/customer-message/:id",
-        element:   <CustomerMessageDetails></CustomerMessageDetails>  ,
+        element: <CustomerMessageDetails></CustomerMessageDetails>,
       },
       {
         path: "/slider-images",
-        element:   <SliderImages></SliderImages>  ,
+        element: <SliderImages></SliderImages>,
       },
       {
         path: "/settings",
-        element:   <Settings></Settings>  ,
+        element: <Settings></Settings>,
       },
       {
         path: "/add-admin",
-        element:   <Admins></Admins>  ,
+        element: <Admins></Admins>,
       },
       {
         path: "/login",
@@ -93,7 +95,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element:  <Profile></Profile> ,
+        element: <Profile></Profile>,
       }
     ],
   },
@@ -102,7 +104,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </AuthProvider>
   </React.StrictMode>
 );

@@ -4,14 +4,12 @@ import { AuthContext } from "../AuthProvider/AuthProvider";
 
 export default function Privetroute({ children }) {
   const location = useLocation();
-  const { user, loading , logOut } = useContext(AuthContext);
-
-
+  const user = localStorage.getItem("user");
 
   if (user) {
     return children;
   }
-  if (loading && !user) {
+  if (!user) {
     return (
       <div className="w-20  mx-auto h-[80vh] flex items-center">
         <span className="loading loading-spinner loading-lg"></span>

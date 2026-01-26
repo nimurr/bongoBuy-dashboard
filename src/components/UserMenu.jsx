@@ -2,7 +2,7 @@ import { Avatar, DarkThemeToggle, Dropdown, Flowbite } from "flowbite-react";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CiUser } from "react-icons/ci";
 import { MdNotificationsNone } from "react-icons/md";
 
@@ -11,9 +11,14 @@ export default function UserMenu() {
 
   const { logOut, user } = useContext(AuthContext);
   // console.log("user :",user?.email)
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    logOut();
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("persist:auth");
+    // logOut();
+    navigate("/login");
   }
 
   const [openNotify, setOpenNotify] = useState(false);

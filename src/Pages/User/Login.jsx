@@ -1,37 +1,42 @@
 import { useContext, useEffect, useState } from "react";
 import { MdOutlineMail } from "react-icons/md";
 import { TbPasswordFingerprint } from "react-icons/tb";
-import { Link, useNavigate } from "react-router-dom";
+import { json, Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
+import { useLoginMutation } from "../../redux/features/auth/authApi";
+import { toast } from "react-toastify";
 
 export default function Login() {
-  const { loginWithGoogle, user, logOut } = useContext(AuthContext);
-  
+
   const navigate = useNavigate();
-  console.log(user);
-  const [adminData, setAdminData] = useState(['nimurnerob404@gmail.com']);
+  const [loginSubmit] = useLoginMutation();
 
-  useEffect((e) => {
-    fetch("http://localhost:5000/all-admins")
-      .then((res) => res.json())
-      .then((result) => setAdminData(result.map((da) => da.email)));
-  }, []);
-  
-  console.log(adminData);
+  const handleLoginSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    const fullData = { email, password };
 
-  const handleLoginWithGoogle = (e) => {
-    e.preventDefault();
+    try {
+      const data = await loginSubmit(fullData).unwrap();
 
-    loginWithGoogle().then((res) => {
+      if (data?.code == 200) {
+        localStorage.setItem("token", JSON.stringify(data?.data?.attributes?.tokens?.access?.token))
+        localStorage.setItem("user", JSON.stringify(data?.data?.attributes?.user))
+        // toast.success(data?.message)
+        navigate('/')
 
-      if (res.user.email == adminData.find((e) => e.includes(res.user.email))) {
-        navigate(location.state ? location.state : "/");
-      } else {
-        alert("Your are Not Admin !!");
-        return logOut();
       }
-    });
+
+    } catch (error) { 
+      toast.error(error?.data?.message)
+      alert(error?.data?.message)
+    }
+
   };
+
+
 
   return (
     <div className="absolute top-0 left-0 z-50 backdrop-blur-lg w-[99vw] h-full">
@@ -41,7 +46,7 @@ export default function Login() {
           src="https://i.ibb.co/whSjqyv/fshub-account-v2-CB432205751.png"
           alt=""
         />
-        <form action="">
+        <form onSubmit={handleLoginSubmit} action="">
           <span className="mt-5 block text-white dark:text-black ">Email</span>
           <label
             className="border  bg-transparent text-white dark:text-black overflow-hidden rounded flex items-center"
@@ -51,6 +56,7 @@ export default function Login() {
             <input
               className="border-0 bg-transparent text-white dark:text-black w-full border-l "
               type="email"
+              name="email"
               placeholder="Enter Your Email"
             />
           </label>
@@ -65,6 +71,7 @@ export default function Login() {
             <input
               className="border-0 bg-transparent text-white dark:text-black w-full border-l "
               type="password"
+              name="password"
               placeholder="Enter password"
             />
           </label>
@@ -74,11 +81,7 @@ export default function Login() {
           >
             Login
           </button>
-          <br />
-          <br />
-          <hr />
-          <br />
-          <button
+          {/* <button
             onClick={handleLoginWithGoogle}
             className="flex justify-center items-center gap-2 bg-blue-400 p-2 text-black rounded-md w-full font-semibold"
           >
@@ -89,13 +92,13 @@ export default function Login() {
               alt="dsfsdf"
             />
           </button>
-          <br />
-          <p className="font-semibold text-white dark:text-black">
+          <br /> */}
+          {/* <p className="font-semibold text-white dark:text-black">
             Have not a Account ?{" "}
             <Link className="text-blue-500" to={"/register"}>
               please Register
             </Link>
-          </p>
+          </p> */}
         </form>
       </div>
     </div>

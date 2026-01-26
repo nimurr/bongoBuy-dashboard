@@ -57,14 +57,14 @@ export default function Navbar() {
               to={"/"}
               className="my-1 flex gap-2 items-center font-semibold text-gray-800 dark:text-white p-2"
             >
-              <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
+              <div className="text-2xl  rounded-lg group-hover:text-red-500 text-gray-800 dark:text-white">
                 <IoHomeOutline />
               </div>
               Dashboard
             </NavLink>
             <NavLink
               to={"/running-order"}
-              className="my-1 flex gap-2 items-center justify-between font-semibold text-gray-800 dark:text-white p-2"
+              className="my-1 flex gap-2 rounded-lg items-center justify-between font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="flex gap-2 items-center">
                 <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -78,7 +78,7 @@ export default function Navbar() {
             </NavLink>
             <NavLink
               to={"/completed-order"}
-              className="my-1 flex gap-2 justify-between items-center font-semibold text-gray-800 dark:text-white p-2"
+              className="my-1 flex gap-2  rounded-lg justify-between items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="flex gap-2 items-center">
                 <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -91,7 +91,7 @@ export default function Navbar() {
               </span>
             </NavLink>
 
-            <NavLink
+            {/* <NavLink
               to={"/customer-message"}
               className="my-1 flex gap-2 justify-between items-center font-semibold text-gray-800 dark:text-white p-2"
             >
@@ -104,10 +104,10 @@ export default function Navbar() {
               <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
                 {customerMessage ? customerMessage : 0}
               </span>
-            </NavLink>
+            </NavLink> */}
             <NavLink
               to={"/review-request"}
-              className="my-1 flex gap-2 justify-between items-center font-semibold text-gray-800 dark:text-white p-2"
+              className="my-1 flex gap-2  rounded-lg justify-between items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="flex gap-2 items-center">
                 <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -122,7 +122,7 @@ export default function Navbar() {
 
             <NavLink
               to={"/all-products"}
-              className="my-1 flex gap-2 justify-between items-center font-semibold text-gray-800 dark:text-white p-2"
+              className="my-1 flex gap-2  rounded-lg justify-between items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="flex gap-2 items-center">
                 <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -137,7 +137,7 @@ export default function Navbar() {
 
             <NavLink
               to={"/add-products"}
-              className="my-1 flex gap-2 items-center font-semibold text-gray-800 dark:text-white p-2"
+              className="my-1 flex gap-2  rounded-lg items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <IoMdAddCircleOutline />
@@ -147,7 +147,7 @@ export default function Navbar() {
 
             <NavLink
               to={"/add-catagories"}
-              className="my-1 flex gap-2 items-center font-semibold text-gray-800 dark:text-white p-2"
+              className="my-1 flex gap-2  rounded-lg items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <IoMdAddCircleOutline />
@@ -157,7 +157,7 @@ export default function Navbar() {
 
             <NavLink
               to={"/slider-images"}
-              className="my-1 flex gap-2 items-center font-semibold text-gray-800 dark:text-white p-2"
+              className="my-1 flex gap-2  rounded-lg items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <SiSlides />
@@ -167,7 +167,7 @@ export default function Navbar() {
 
             <NavLink
               to={"/settings"}
-              className="my-1 flex gap-2 items-center font-semibold text-gray-800 dark:text-white p-2"
+              className="my-1 flex gap-2  rounded-lg items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <IoSettingsOutline />
@@ -177,7 +177,7 @@ export default function Navbar() {
 
             <NavLink
               to={"/add-admin"}
-              className="my-1 flex gap-2 items-center font-semibold text-gray-800 dark:text-white p-2"
+              className="my-1 flex gap-2  rounded-lw items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <MdOutlineSecurity />
