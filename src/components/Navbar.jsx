@@ -177,7 +177,7 @@ export default function Navbar() {
 
             <NavLink
               to={"/add-admin"}
-              className="my-1 flex gap-2  rounded-lw items-center font-semibold text-gray-800 dark:text-white p-2"
+              className="my-1 flex gap-2  rounded-lg items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <MdOutlineSecurity />
