@@ -22,14 +22,14 @@ export default function Login() {
       const data = await loginSubmit(fullData).unwrap();
 
       if (data?.code == 200) {
-        localStorage.setItem("token", JSON.stringify(data?.data?.attributes?.tokens?.access?.token))
+        localStorage.setItem("token", data?.data?.attributes?.tokens?.access?.token)
         localStorage.setItem("user", JSON.stringify(data?.data?.attributes?.user))
         // toast.success(data?.message)
         navigate('/')
 
       }
 
-    } catch (error) { 
+    } catch (error) {
       toast.error(error?.data?.message)
       alert(error?.data?.message)
     }

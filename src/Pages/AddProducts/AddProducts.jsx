@@ -1,360 +1,387 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { MdDeleteForever } from "react-icons/md";
+import { useState, useEffect } from "react";
+import { MdDeleteForever, MdEdit, MdVisibility } from "react-icons/md";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useCreateProductMutation, useGetProductsQuery, useUpdateProductMutation, useDeleteProductMutation } from "../../redux/features/product/product";
+import { useGetCategoriesQuery } from "../../redux/features/category/category";
+import Url from "../../redux/baseApi/forImageUrl";
 
-export default function AddProducts() { 
+export default function AddProducts() {
+  const { data } = useGetProductsQuery();
+  const products = data?.data?.attributes || [];
 
-  const [uploadImages, setUploadImages] = useState([]);
-  const [categories , setCategories ] = useState([]);
+  const [createProduct] = useCreateProductMutation();
+  const [deleteProduct] = useDeleteProductMutation();
+  const [updateProduct] = useUpdateProductMutation();
 
-  useEffect(()=>{
-    axios.get('http://localhost:5000/all-categories')
-    .then(res => setCategories(res?.data))
-  },[])
+  // ✅ Categories
+  const { data: categoryData } = useGetCategoriesQuery();
+  const categories = categoryData?.data?.attributes || [];
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
-  const handleImageChange = async (e) => {
-    const files = e.target.files;
-    if (files.length === 0) {
-      return toast.error("No files uploaded", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [viewProduct, setViewProduct] = useState(null);
 
-    const uploadedImages = [];
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const data = new FormData();
-      data.append("file", file);
-      data.append("upload_preset", "ofkzimiz");
-      data.append("cloud_name", "dpigjffah");
+  // ✅ Selected Category
+  const [selectedCategory, setSelectedCategory] = useState("");
 
-      try {
-        const res = await axios.post(
-          "https://api.cloudinary.com/v1_1/dpigjffah/image/upload",
-          data
-        );
-        const uploadImageURL = res.data.secure_url;
-        uploadedImages.push(uploadImageURL);
-      } catch (error) {
-        console.error("Error uploading the image:", error);
-        alert("Image upload failed");
-        return;
-      }
-    }
-    setUploadImages((prevImages) => [...prevImages, ...uploadedImages]);
+  /* ================= MODAL HANDLERS ================= */
+  const openCreateModal = () => {
+    setEditingProduct(null);
+    setSelectedCategory("");
+    setIsModalOpen(true);
   };
 
-  const removeImage = (index) => {
-    const newImages = uploadImages.filter((_, idx) => idx !== index);
-    setUploadImages(newImages);
+  const openViewModal = (product) => {
+    setViewProduct(product);
+    setIsViewModalOpen(true);
   };
-  const [formData, setFormData] = useState({
+
+
+  const [productForm, setProductForm] = useState({
     name: "",
-    category: "",
-    quantity: "",
-    pCode: "",
-    rPrice: "",
-    discount: "",
-    sizes: [""], // Initialize with one size input
+    image: null,
+    price: "",
+    discountPrice: "",
+    categoryId: "",
+    inStockQuantity: "",
     description: "",
+    agvRating: "",
+    reviews: "",
+    promoCode: "",
+    promoCodeDiscount: "",
+    isActive: true,
   });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  const openEditModal = (product) => {
+    setEditingProduct(product);
+    setProductForm({
+      name: product.name || "",
+      image: null,
+      price: product.price || "",
+      discountPrice: product.discountPrice || 0,
+      categoryId: product.categoryId || "",
+      inStockQuantity: product.inStockQuantity || 0,
+      description: product.description || "",
+      agvRating: product.agvRating || 0,
+      reviews: product.reviews || 0,
+      promoCode: product.promoCode || "",
+      promoCodeDiscount: product.promoCodeDiscount || 0,
+      isActive: product.isActive ?? true,
+    });
+    setIsModalOpen(true);
   };
 
-  const handleSizeChange = (index, value) => {
-    const newSizes = [...formData.sizes];
-    newSizes[index] = value;
-    setFormData((prevData) => ({ ...prevData, sizes: newSizes }));
-  };
-
-  const addSizeField = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      sizes: [...prevData.sizes, ""],
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setProductForm(prev => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value
     }));
   };
 
-  const removeSizeField = (index) => {
-    const newSizes = formData.sizes.filter((_, idx) => idx !== index);
-    setFormData((prevData) => ({ ...prevData, sizes: newSizes }));
+  const handleImageChange = (e) => {
+    setProductForm(prev => ({
+      ...prev,
+      image: e.target.files[0]
+    }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (uploadImages.length === 0) {
-      return toast.error("Please upload at least one image.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+
+  /* ================= CATEGORY HANDLER ================= */
+
+
+  const handleSubmit = async () => {
+
+    const payload = {
+      name: productForm.name,
+      image: productForm.image,
+      price: productForm.price,
+      discountPrice: productForm.discountPrice,
+      categoryId: productForm.categoryId,
+      inStockQuantity: productForm.inStockQuantity,
+      description: productForm.description,
+      agvRating: productForm.agvRating,
+      reviews: productForm.reviews,
+      promoCode: productForm.promoCode,
+      promoCodeDiscount: productForm.promoCodeDiscount,
+      isActive: productForm.isActive,
+    };
+
+    if (!productForm.categoryId) {
+      return toast.error("Please Select a Category");
     }
-    const data = { ...formData, uploadImages };
-    await axios.post("http://localhost:5000/addProducts", data) 
-    .then(res => {
-      console.log(res)
-      toast.success("Product Add Successfully !!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    })
 
 
+    const formData = new FormData();
+    formData.append("name", payload.name);
+    formData.append("image", payload.image);
+    formData.append("price", payload.price);
+    formData.append("discountPrice", payload.discountPrice || 0);
+    formData.append("categoryId", payload.categoryId);
+    formData.append("inStockQuantity", payload.inStockQuantity || 0);
+    formData.append("description", payload.description);
+    formData.append("agvRating", payload.agvRating || 0);
+    formData.append("reviews", payload.reviews || 0);
+    formData.append("promoCode", payload.promoCode);
+    formData.append("promoCodeDiscount", payload.promoCodeDiscount);
+    formData.append("isActive", payload.isActive);
 
-    console.log(data);
-    setFormData({
-      name: "",
-      category: "",
-      quantity: "",
-      pCode: "",
-      rPrice: "",
-      discount: "",
-      sizes: [""], // Reset sizes to initial state
-      description: "",
-    });
-    setUploadImages([]);
+    try {
+      if (!editingProduct) {
+        const res = await createProduct(formData).unwrap();
+        console.log(res)
+        if (res?.code == 201) {
+          toast.success("Product Added Successfully");
+          setIsModalOpen(false);
+          setProductForm({
+            name: "",
+            image: null,
+            price: "",
+            discountPrice: "",
+            categoryId: "",
+            inStockQuantity: "",
+            description: "",
+            agvRating: "",
+            reviews: "",
+            promoCode: "",
+            promoCodeDiscount: "",
+            isActive: true,
+          })
+        }
+        else {
+          toast.error(res?.data?.message || "Failed to add product.");
+        }
+      }
+      else {
+        const res = await updateProduct({
+          id: editingProduct._id,
+          data: formData,
+        })
+        console.log(res)
+        if (res) {
+          toast.info("Product Update Successfully");
+          setIsModalOpen(false);
+          setProductForm({
+            name: "",
+            image: null,
+            price: "",
+            discountPrice: "",
+            categoryId: "",
+            inStockQuantity: "",
+            description: "",
+            agvRating: "",
+            reviews: "",
+            promoCode: "",
+            promoCodeDiscount: "",
+            isActive: true,
+          })
+        }
+      }
+
+    } catch (error) {
+      toast.error(error?.data?.message || "Failed to add product.");
+    }
+
   };
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await deleteProduct(id).unwrap();
+      if (res?.code === 200) {
+        toast.warning("Product Deleted Successfully");
+      }
+    } catch (error) {
+      toast.error(error?.data?.message);
+    }
+  };
+
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md dark:bg-gray-800">
+    <div className="p-6">
       <ToastContainer />
-      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-white">
-        Add New Product
-      </h2>
 
-      <form onSubmit={handleSubmit}>
-        {/* Product Image */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Product Images
-          </label>
-          <div className="w-full items-center justify-center bg-grey-lighter">
-            <label className="w-full flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-sm tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-primary">
-              <svg
-                className="w-8 h-8"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-              >
-                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-              </svg>
-              <span className="mt-2 text-base leading-normal">
-                Select files
-              </span>
-              <input
-                onChange={handleImageChange}
-                type="file"
-                className="hidden"
-                multiple // Allow multiple file selection
-              />
-            </label>
-          </div>
-          {/* Display uploaded images */}
-          <div className="mt-4 flex flex-wrap gap-2">
-            {uploadImages.map((image, idx) => (
-              <div key={idx} className="relative">
-                <img className="w-28" src={image} alt={`Uploaded ${idx}`} />
-                <button
-                  type="button"
-                  onClick={() => removeImage(idx)}
-                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-                >
-                  <MdDeleteForever className="text-xl" />
+      {/* HEADER */}
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-semibold text-white">Products</h2>
+        <button
+          onClick={openCreateModal}
+          className="bg-primary text-white px-4 py-2 rounded"
+        >
+          Add Product
+        </button>
+      </div>
+
+      {/* TABLE */}
+      <div className="overflow-x-auto bg-slate-800 rounded">
+        <table className="min-w-full text-white">
+          <thead className="bg-slate-700">
+            <tr>
+              <th className="p-3 text-left">Image</th>
+              <th className="p-3 text-left">Name</th>
+              <th className="p-3 text-left">Price</th>
+              <th className="p-3 text-left">Stock</th>
+              <th className="p-3 text-left">Status</th>
+              <th className="p-3 text-center">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {products.map((item) => (
+              <tr key={item._id} className="border-b border-slate-700">
+                <td className="p-3">
+                  <img
+                    src={Url + item.image}
+                    className="h-12 w-12 object-cover rounded"
+                  />
+                </td>
+                <td className="p-3">{item.name}</td>
+                <td className="p-3">৳{item.price}</td>
+                <td className="p-3">{item.inStockQuantity}</td>
+                <td className="p-3">
+                  <span className={`${item.isActive ? 'text-green-500 bg-green-100 py-1 px-3 rounded-sm' : 'text-red-500 bg-red-100 p-1 px-3 rounded-sm'}`}>{item.isActive ? "Active" : "Inactive"}</span>
+
+                </td>
+                <td className="p-3 flex justify-center gap-2">
+                  <button
+                    onClick={() => openViewModal(item)}
+                    className="text-blue-400 text-xl"
+                  >
+                    <MdVisibility />
+                  </button>
+                  <button
+                    onClick={() => openEditModal(item)}
+                    className="text-yellow-400 text-xl"
+                  >
+                    <MdEdit />
+                  </button>
+                  <button onClick={() => handleDelete(item._id)} className="text-red-600 text-xl">
+                    <MdDeleteForever />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* ================= ADD / EDIT MODAL ================= */}
+      {isModalOpen && (
+        <div className="fixed inset-0 max-h-screen overflow-y-auto py-20  bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-gray-800 w-[90%] max-w-2xl p-6 rounded">
+            <h3 className="text-xl text-white mb-4">
+              {editingProduct ? "Edit Product" : "Add Product"}
+            </h3>
+
+            <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+              <input name="name" value={productForm.name} onChange={handleChange}
+                placeholder="Product Name" className="input px-3 py-2 bg-transparent border text-white rounded" />
+
+              <select name="categoryId" value={productForm._id} onChange={handleChange}
+                className="input bg-transparent border text-white rounded">
+                <option className="bg-black" value="">Select Category</option>
+                {categories.map(cat => (
+                  <option className="bg-black" key={cat._id} value={cat._id}>{cat.name}</option>
+                ))}
+              </select>
+
+              <input type="number" name="price" value={productForm.price}
+                onChange={handleChange} placeholder="Price" className="input bg-transparent border text-white rounded" />
+
+              <input type="number" name="discountPrice" value={productForm.discountPrice}
+                onChange={handleChange} placeholder="Discount %" className="input bg-transparent border text-white rounded" />
+
+              <input type="number" name="inStockQuantity" value={productForm.inStockQuantity}
+                onChange={handleChange} placeholder="Stock Quantity" className="input bg-transparent border text-white rounded" />
+
+              <input type="number" step="0.1" name="agvRating" value={productForm.agvRating}
+                onChange={handleChange} placeholder="Average Rating" className="input bg-transparent border text-white rounded" />
+
+              <input type="number" name="reviews" value={productForm.reviews}
+                onChange={handleChange} placeholder="Total Reviews" className="input bg-transparent border text-white rounded" />
+
+              <input name="promoCode" value={productForm.promoCode}
+                onChange={handleChange} placeholder="Promo Code" className="input px-3 bg-transparent border text-white rounded py-2" />
+
+              <input type="number" name="promoCodeDiscount"
+                value={productForm.promoCodeDiscount}
+                onChange={handleChange} placeholder="Promo Discount %" className="input bg-transparent border text-white rounded" />
+
+
+              <label className="w-full md:col-span-2 border flex flex-col items-center px-4 py-6 border-dashed border-white rounded cursor-pointer mb-3 text-white">
+                <span className="flex flex-col justify-center items-center gap-2">
+                  <svg className="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" > <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" /> </svg>
+                  {productForm.image ? "Image Uploaded . You can change it" : "Select Image"}
+                </span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageChange}
+                />
+              </label>
+
+
+              <textarea name="description" value={productForm.description}
+                onChange={handleChange} rows="4"
+                placeholder="Product Description"
+                className="md:col-span-2 input bg-transparent border text-white rounded" />
+
+              <div className="md:col-span-2 flex gap-6 text-white">
+                <label><input type="checkbox" name="isActive"
+                  checked={productForm.isActive} onChange={handleChange} /> Active</label>
+
+              </div>
+
+              <div className="md:col-span-2 flex justify-end gap-3">
+                <button type="button" onClick={() => setIsModalOpen(false)}
+                  className="bg-red-600 text-white px-4 py-2 rounded">Cancel</button>
+
+                <button type="button" onClick={handleSubmit}
+                  className="!bg-primary text-white px-6 py-2 rounded">
+                  {editingProduct ? "Update" : "Create"}
                 </button>
               </div>
-            ))}
+
+            </form>
+
           </div>
         </div>
+      )}
 
-        {/* Other input fields */}
+      {/* ================= VIEW MODAL ================= */}
+      {isViewModalOpen && viewProduct && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-gray-800 w-[90%] max-w-xl p-6 rounded text-white">
+            <h3 className="text-xl mb-4">Product Details</h3>
 
-        {/* Product Name */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Product Name
-          </label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            required
-            className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300"
-            placeholder="Enter product name"
-          />
-        </div>
+            <img
+              src={Url + viewProduct.image}
+              className="h-60 w-full object-cover rounded mb-4"
+            />
 
-        {/* Product Category (Select Option) */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Category
-          </label>
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleInputChange}
-            required
-            className="mt-1 block sm:w-full overflow-hidden text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300"
-          >
-            <option value="" disabled>
-              Select category
-            </option>
-            {
-              categories.map((cate , id)=> (
-                <option key={id} value={cate?.categoryName}>{cate?.categoryName}</option>
-              ))
-            }
-            {/* <option value="T-shirt">T-shirt</option>
-            <option value="Shoes">Shoes</option>
-            <option value="Accessories">Accessories</option>
-            <option value="Jeans">Jeans</option> */}
-          </select>
-        </div>
+            <p className="flex items-center justify-between my-2"><b>Name:</b> {viewProduct.name}</p>
+            <p className="flex items-center justify-between my-2"><b>Price:</b>  ৳{viewProduct.price}</p>
+            <p className="flex items-center justify-between my-2"><b>Stock:</b> {viewProduct.inStockQuantity}</p>
+            <p className="flex items-center justify-between my-2"><b>Avg Rating:</b> {viewProduct.agvRating}</p>
+            <p className="flex items-center justify-between my-2"><b>Promo Code:</b> {viewProduct.promoCode}</p>
+            <p className="flex items-center justify-between my-2"><b>Promo Code Discount:</b> {viewProduct.promoCodeDiscount}</p>
+            <p className="flex items-center justify-between my-2"><b>Total Reviews:</b> {viewProduct.reviews}</p>
 
-        {/* Product Code */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Product Code (P-Code)
-          </label>
-          <input
-            type="text"
-            name="pCode"
-            value={formData.pCode}
-            onChange={handleInputChange}
-            required
-            className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300"
-            placeholder="Enter product code"
-          />
-        </div>
-
-        {/* Regular Price */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Regular Price (R-Price)
-          </label>
-          <input
-            type="number"
-            name="rPrice"
-            value={formData.rPrice}
-            onChange={handleInputChange}
-            required
-            className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300"
-            placeholder="Enter regular price"
-          />
-        </div>
-
-        {/* Discount */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Discount (Optional)
-          </label>
-          <input
-            type="number"
-            name="discount"
-            value={formData.discount}
-            onChange={handleInputChange}
-            className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300"
-            placeholder="Enter discount percentage"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Quantity
-          </label>
-          <input
-            type="number"
-            name="quantity" // Corrected from "discount" to "quantity"
-            value={formData.quantity}
-            required
-            onChange={handleInputChange}
-            className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300"
-            placeholder="Enter Quantity"
-          />
-        </div>
-
-        {/* Sizes (Add/Remove Fields) */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Sizes (Optional)
-          </label>
-          {formData.sizes.map((size, idx) => (
-            <div key={idx} className="flex items-center gap-2">
-              <input
-                type="text"
-                value={size}
-                onChange={(e) => handleSizeChange(idx, e.target.value)}
-                className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300"
-                placeholder={`Size ${idx + 1}`}
-              />
-              {idx > 0 && (
-                <button
-                  type="button"
-                  onClick={() => removeSizeField(idx)}
-                  className="bg-red-500 text-white rounded-full p-1"
-                >
-                  <MdDeleteForever className="text-xl" />
-                </button>
-              )}
+            <div className="text-right mt-4">
+              <button
+                onClick={() => setIsViewModalOpen(false)}
+                className="bg-primary px-6 py-2 rounded"
+              >
+                Close
+              </button>
             </div>
-          ))}
-          <button
-            type="button"
-            onClick={addSizeField}
-            className="mt-2 bg-blue-600 text-white p-2 rounded-md"
-          >
-            Add Size
-          </button>
+          </div>
         </div>
-
-        {/* Description */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Description
-          </label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
-            required
-            className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300"
-            placeholder="Enter product description"
-            rows="4"
-          ></textarea>
-        </div>
-
-        {/* Submit Button */}
-        <div className="text-center">
-          <button
-            type="submit"
-            className="px-6 py-2 font-medium bg-[#0dc043] text-white w-full rounded-lg hover:bg-primary-dark focus:ring-4 focus:outline-none focus:ring-primary dark:bg-primary dark:hover:bg-primary-dark"
-          >
-            Add Product
-          </button>
-        </div>
-      </form>
+      )}
     </div>
   );
 }
