@@ -56,9 +56,9 @@ export default function Navbar({ handleShow }) {
             <NavLink
               to={"/"}
               onClick={handleShow}
-              className="my-1 flex gap-2 items-center font-semibold text-gray-800 dark:text-white p-2"
+              className="my-1 flex gap-2 rounded-lg items-center font-semibold text-gray-800 dark:text-white p-2"
             >
-              <div className="text-2xl  rounded-lg group-hover:text-red-500 text-gray-800 dark:text-white">
+              <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <IoHomeOutline />
               </div>
               Dashboard

@@ -241,7 +241,7 @@ export default function AddProducts() {
                 <td className="p-3">৳{item.price}</td>
                 <td className="p-3">{item.inStockQuantity}</td>
                 <td className="p-3">
-                  <span className={`${item.isActive ? 'text-green-500 bg-green-100 py-1 px-3 rounded-sm' : 'text-red-500 bg-red-100 p-1 px-3 rounded-sm'}`}>{item.isActive ? "Active" : "Inactive"}</span>
+                  <span className={`${item.isActive ? 'text-green-600 bg-green-50 py-1 px-3 rounded-sm font-bold' : 'text-red-600 bg-red-50 p-1 px-3 rounded-sm font-bold'} `}>{item.isActive ? "Active" : "Inactive"}</span>
 
                 </td>
                 <td className="p-3 flex justify-center gap-2">

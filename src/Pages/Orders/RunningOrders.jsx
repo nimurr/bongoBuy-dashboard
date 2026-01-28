@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { useGetAllOrdersQuery } from "../../redux/features/orders/orders";
 import Url from "../../redux/baseApi/forImageUrl";
+import moment from "moment";
 
 export default function RunningOrders() {
   const [status, setStatus] = useState("");
@@ -85,27 +86,46 @@ export default function RunningOrders() {
               </Table.Row>
             ) : (
               orders?.map((item, idx) => {
-                const product = item.products[0];
+                // const product = item.products[0];
 
                 return (
                   <Table.Row key={item._id} className="bg-white dark:bg-gray-800">
                     <Table.Cell>
                       {(page - 1) * limit + idx + 1}
                     </Table.Cell>
-
                     <Table.Cell>
-                      <img
-                        className="w-10"
-                        src={`${Url}${product.productId.image}`}
-                        alt={product.productId.name}
-                      />
+                      {item.products.map((pro) => (
+                        <img
+                          key={pro._id}
+                          className="w-10 mb-2"
+                          src={`${Url}${pro.productId.image}`}
+                          alt={pro.productId.name}
+                        />
+                      ))}
                     </Table.Cell>
 
-                    <Table.Cell>{product.productId.name}</Table.Cell>
+                    <Table.Cell>
+                      {item.products.map((pro) => (
+                        <p key={pro._id}>{pro.productId.name}</p>
+                      ))}
+                    </Table.Cell>
 
-                    <Table.Cell>{product.price} TK</Table.Cell>
-                    <Table.Cell>{product.quantity}</Table.Cell>
-                    <Table.Cell>{} </Table.Cell>
+                    <Table.Cell>
+                      {item.products.map((pro) => (
+                        <p key={pro._id}>{pro.price} TK</p>
+                      ))}
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      {item.products.map((pro) => (
+                        <p key={pro._id}>Qty: {pro.quantity}</p>
+                      ))}
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      {moment(item.createdAt).format(" h:mm A | DD-MM-YYYY")}
+                    </Table.Cell>
+
 
                     <Table.Cell>
                       <span
