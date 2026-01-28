@@ -1,151 +1,181 @@
-import axios from "axios";
 import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { useGetAllOrdersQuery } from "../../redux/features/orders/orders";
+import Url from "../../redux/baseApi/forImageUrl";
 
 export default function RunningOrders() {
-  const [orders, setOrders] = useState([]);
   const [status, setStatus] = useState("");
-  const [filterStatus, setFilterStatus] = useState("All"); // New state for filtering
+  const [page, setPage] = useState(1);
+  const limit = 10;
 
+  const { data, isLoading } = useGetAllOrdersQuery({
+    status,
+    page,
+    limit,
+  });
+
+  const orders = data?.data?.attributes?.results || [];
+  const pagination = data?.data?.attributes?.pagination;
+
+  console.log(data?.data?.attributes)
+
+  // Reset page when status changes
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/customer-orders")
-      .then((res) =>
-        setOrders(
-          res?.data.filter((item) => item?.orderStatus !== "Completed").reverse()
-        )
-      );
-  }, []);
-
-  const handleStatusChange = (e) => {
-    setStatus(e.target.value);
-  };
-
-  const handleSave = async (id) => {
-    const selectedOrder = orders.find((order) => order._id === id);
-
-    const formData = {
-      ...selectedOrder,
-      orderStatus: status, // Update orderStatus with the selected status
-    };
-
-    if (selectedOrder) {
-      try {
-        await axios.put(`http://localhost:5000/customer-orders/${id}`, formData);
-        toast.success(`Status updated to ${status}`, {
-          position: "top-right",
-          autoClose: 3000,
-          theme: "colored",
-        });
-      } catch (error) {
-        console.error(error);
-        toast.error("Failed to update order status", {
-          position: "top-right",
-          autoClose: 3000,
-          theme: "colored",
-        });
-      }
-    }
-  };
-
-  // Filter orders based on filterStatus
-  const filteredOrders =
-    filterStatus === "All"
-      ? orders
-      : orders.filter((order) => order.orderStatus === filterStatus);
+    setPage(1);
+  }, [status]);
 
   return (
     <div>
       <ToastContainer />
-      <h2 className="text-2xl font-semibold mb-5 dark:text-white">Customer Orders</h2>
 
-      {/* Filter dropdown */}
-      <div className="mb-5">
-        <label className="mr-2 font-medium dark:text-gray-300">Filter by Status:</label>
-        <select
-          onChange={(e) => setFilterStatus(e.target.value)}
-          value={filterStatus}
-          className="border-gray-400 py-1 rounded-md"
-        >
-          <option value="All">All</option>
-          <option value="Pending">Pending</option>
-          <option value="Processing">Processing</option>
-          <option value="Delivery">Delivery</option>
-          <option value="Cancel">Cancel</option>
-        </select>
+      {/* Header + Filter */}
+      <div className="flex items-center justify-between gap-5 flex-wrap mb-5">
+        <h2 className="text-2xl font-semibold dark:text-white">
+          Customer Orders
+        </h2>
+
+        <div>
+          <label className="mr-2 font-medium dark:text-gray-300">
+            Filter by Status:
+          </label>
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            className="border-gray-800 py-1 rounded-md"
+          >
+            <option value="">All</option>
+            <option value="pending">Pending</option>
+            <option value="processing">Processing</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
       </div>
 
-      <div className="overflow-x-auto rounded-none">
-        <Table hoverable className="rounded-none min-w-[800px]">
+      {/* Table */}
+      <div className="overflow-x-auto">
+        <Table hoverable className="min-w-[800px]">
           <Table.Head>
             <Table.HeadCell>SL</Table.HeadCell>
-            <Table.HeadCell>Product Images</Table.HeadCell>
-            <Table.HeadCell>Product Price</Table.HeadCell>
-            <Table.HeadCell>Product Quantity</Table.HeadCell>
-            <Table.HeadCell>Product Size</Table.HeadCell>
+            <Table.HeadCell>Image</Table.HeadCell>
+            <Table.HeadCell>Name</Table.HeadCell>
+            <Table.HeadCell>Price</Table.HeadCell>
+            <Table.HeadCell>Qty</Table.HeadCell>
+            <Table.HeadCell>Order Date </Table.HeadCell>
             <Table.HeadCell>Status</Table.HeadCell>
             <Table.HeadCell>Details</Table.HeadCell>
           </Table.Head>
+
           <Table.Body className="divide-y">
-            {filteredOrders.map((item, idx) => (
-              <Table.Row key={idx} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                <Table.Cell>{idx + 1}</Table.Cell>
-                <Table.Cell>
-                  <img className="w-10" src={item.productImages} alt="" />
-                </Table.Cell>
-                <Table.Cell>{item.productPrice} TK</Table.Cell>
-                <Table.Cell>{item.productQuantity}</Table.Cell>
-                <Table.Cell>{item.productSize}</Table.Cell>
-                <Table.Cell>
-                  <select
-                    onChange={handleStatusChange}
-                    defaultValue={item.orderStatus}
-                    className={`border-gray-400 py-1 rounded-md mr-2 ${
-                      item.orderStatus === "Pending" && "text-pink-500"
-                    } ${item.orderStatus === "Processing" && "text-yellow-500"} ${
-                      item.orderStatus === "Delivery" && "text-blue-500"
-                    } ${item.orderStatus === "Completed" && "text-green-500"} ${
-                      item.orderStatus === "Cancel" && "text-red-500"
-                    }`}
-                  >
-                    <option className="text-pink-500" value="Pending">
-                      Pending
-                    </option>
-                    <option className="text-yellow-500" value="Processing">
-                      Processing
-                    </option>
-                    <option className="text-blue-500" value="Delivery">
-                      Delivery
-                    </option>
-                    <option className="text-green-500" value="Completed">
-                      Completed
-                    </option>
-                    <option className="text-red-500 font-semibold" value="Cancel">
-                      Cancel
-                    </option>
-                  </select>
-                  <button
-                    onClick={() => handleSave(item._id)}
-                    className="p-2 rounded-md bg-blue-700 text-white"
-                  >
-                    Save
-                  </button>
-                </Table.Cell>
-                <Table.Cell>
-                  <Link
-                    to={`/running-order/${item._id}`}
-                    className="p-2 bg-primary rounded text-white dark:text-white min-w-32 text-center block"
-                  >
-                    View Details
-                  </Link>
+            {isLoading ? (
+              <Table.Row>
+                <Table.Cell colSpan={7} className="text-center">
+                  Loading...
                 </Table.Cell>
               </Table.Row>
-            ))}
+            ) : orders.length === 0 ? (
+              <Table.Row>
+                <Table.Cell colSpan={7} className="text-center">
+                  No orders found
+                </Table.Cell>
+              </Table.Row>
+            ) : (
+              orders?.map((item, idx) => {
+                const product = item.products[0];
+
+                return (
+                  <Table.Row key={item._id} className="bg-white dark:bg-gray-800">
+                    <Table.Cell>
+                      {(page - 1) * limit + idx + 1}
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <img
+                        className="w-10"
+                        src={`${Url}${product.productId.image}`}
+                        alt={product.productId.name}
+                      />
+                    </Table.Cell>
+
+                    <Table.Cell>{product.productId.name}</Table.Cell>
+
+                    <Table.Cell>{product.price} TK</Table.Cell>
+                    <Table.Cell>{product.quantity}</Table.Cell>
+                    <Table.Cell>{} </Table.Cell>
+
+                    <Table.Cell>
+                      <span
+                        className={`px-2 py-1 rounded text-white text-sm
+                          ${item.status === "pending"
+                            ? "bg-yellow-500"
+                            : item.status === "processing"
+                              ? "bg-blue-500"
+                              : item.status === "delivered"
+                                ? "bg-green-500"
+                                : "bg-red-500"
+                          }`}
+                      >
+                        {item.status}
+                      </span>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Link
+                        to={`/running-order/${item._id}`}
+                        className="px-3 py-1 bg-primary rounded text-white block text-center"
+                      >
+                        View
+                      </Link>
+                    </Table.Cell>
+                  </Table.Row>
+                );
+              })
+            )}
           </Table.Body>
         </Table>
       </div>
+
+      {/* Pagination */}
+      {pagination && pagination.totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-6">
+          <button
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+            className="px-4 py-1 border !bg-primary text-white rounded disabled:opacity-50"
+          >
+            Prev
+          </button>
+
+          {[...Array(pagination.totalPages)].map((_, i) => {
+            const pageNumber = i + 1;
+            return (
+              <button
+                key={pageNumber}
+                onClick={() => setPage(pageNumber)}
+                className={`px-4 py-1 border rounded
+                  ${page === pageNumber
+                    ? "bg-blue-600 text-white"
+                    : "bg-white"
+                  }`}
+              >
+                {pageNumber}
+              </button>
+            );
+          })}
+
+          <button
+            disabled={page === pagination.totalPages}
+            onClick={() => setPage(page + 1)}
+            className="px-4 py-1 border rounded !bg-primary text-white disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }

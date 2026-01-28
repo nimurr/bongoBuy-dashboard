@@ -12,7 +12,7 @@ import { TbShoppingCartCheck } from "react-icons/tb";
 import { RiMessage2Fill } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import axios from "axios";
-export default function Navbar() {
+export default function Navbar({ handleShow }) {
 
   const [runningOrder, setRunningOrder] = useState(0);
   const [compleatOrder, setCompleatOrder] = useState(0)
@@ -55,6 +55,7 @@ export default function Navbar() {
           <ul className="">
             <NavLink
               to={"/"}
+              onClick={handleShow}
               className="my-1 flex gap-2 items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="text-2xl  rounded-lg group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -63,21 +64,23 @@ export default function Navbar() {
               Dashboard
             </NavLink>
             <NavLink
-              to={"/running-order"}
+              to={"/all-orders"}
+              onClick={handleShow}
               className="my-1 flex gap-2 rounded-lg items-center justify-between font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="flex gap-2 items-center">
                 <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                   <FaCartPlus />
                 </div>
-                Running Orders{" "}
+                All Orders{" "}
               </div>
               <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
                 {runningOrder ? runningOrder : 0}
               </span>
             </NavLink>
-            <NavLink
+            {/* <NavLink
               to={"/completed-order"}
+              onClick={handleShow}
               className="my-1 flex gap-2  rounded-lg justify-between items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="flex gap-2 items-center">
@@ -89,7 +92,7 @@ export default function Navbar() {
               <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
                 {compleatOrder ? compleatOrder : 0}
               </span>
-            </NavLink>
+            </NavLink> */}
 
             {/* <NavLink
               to={"/customer-message"}
@@ -107,6 +110,7 @@ export default function Navbar() {
             </NavLink> */}
             <NavLink
               to={"/review-request"}
+              onClick={handleShow}
               className="my-1 flex gap-2  rounded-lg justify-between items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="flex gap-2 items-center">
@@ -122,7 +126,8 @@ export default function Navbar() {
 
             <NavLink
               to={"/add-products"}
-             className="my-1 flex gap-2  rounded-lg justify-between items-center font-semibold text-gray-800 dark:text-white p-2"
+              onClick={handleShow}
+              className="my-1 flex gap-2  rounded-lg justify-between items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="flex gap-2 items-center">
                 <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -137,6 +142,7 @@ export default function Navbar() {
 
             <NavLink
               to={"/add-catagories"}
+              onClick={handleShow}
               className="my-1 flex gap-2  rounded-lg items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -147,6 +153,7 @@ export default function Navbar() {
 
             <NavLink
               to={"/slider-images"}
+              onClick={handleShow}
               className="my-1 flex gap-2  rounded-lg items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -157,6 +164,7 @@ export default function Navbar() {
 
             <NavLink
               to={"/settings"}
+              onClick={handleShow}
               className="my-1 flex gap-2  rounded-lg items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -167,6 +175,7 @@ export default function Navbar() {
 
             <NavLink
               to={"/add-admin"}
+              onClick={handleShow}
               className="my-1 flex gap-2  rounded-lg items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">

@@ -66,7 +66,7 @@ function App() {
           <IoMdClose className="" />
         </button>
 
-        <Navbar></Navbar>
+        <Navbar handleShow={handleShow}></Navbar>
       </div>
 
       <div className="lg:w-10/12 w-full">

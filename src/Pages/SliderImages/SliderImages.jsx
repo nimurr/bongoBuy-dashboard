@@ -8,7 +8,7 @@ import { useCreateBannerMutation, useDeleteBannerMutation, useGetBannerQuery, us
 import Url from "../../redux/baseApi/forImageUrl";
 
 export default function SliderImages() {
-  const { data, isLoading } = useGetBannerQuery();
+  const { data, isLoading, refetch } = useGetBannerQuery();
   const banners = data?.data?.attributes || [];
 
   const [createBanner] = useCreateBannerMutation();
@@ -34,28 +34,48 @@ export default function SliderImages() {
       console.log(res)
       if (res?.code == 201) {
         toast.success("Banner added successfully");
+        refetch();
         setOpenModal(false);
       }
     } catch (error) {
-
+      toast.error(error?.data?.message || "Something went wrong");
     }
-
-    console.log("NEW IMAGE:", image);
-    toast.success("Banner added (UI only)");
-    setOpenModal(false);
-    setImage(null);
   };
 
   /* ---------------- STATUS TOGGLE ---------------- */
-  const handleToggleStatus = (item) => {
-    console.log("STATUS TOGGLE:", item._id, !item.active);
-    toast.success("Status updated (UI only)");
+  const handleToggleStatus = async (item) => {
+
+    try {
+      if (item.active == true) {
+        const res = await updateBanner({ id: item._id, data: { active: false } }).unwrap();
+        if (res?.code == 200) {
+          toast.info("Status Activated successfully");
+          refetch();
+        }
+      } else {
+        const res = await updateBanner({ id: item._id, data: { active: true } }).unwrap();
+        if (res?.code == 200) {
+          toast.info("Status Deactivated successfully");
+          refetch();
+        }
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || "Something went wrong");
+    }
   };
 
   /* ---------------- DELETE ---------------- */
-  const handleDelete = (id) => {
-    console.log("DELETE ID:", id);
-    toast.success("Banner deleted (UI only)");
+  const handleDelete = async (id) => {
+
+    try {
+      const res = await deleteBanner(id).unwrap();
+      if (res?.code == 200) {
+        toast.success("Banner deleted successfully");
+        refetch();
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || "Something went wrong");
+    }
   };
 
   return (
@@ -100,10 +120,10 @@ export default function SliderImages() {
             className="relative border rounded overflow-hidden"
           >
             {/* IMAGE */}
-            <div className="flex items-center gap-3">
+            <div className="flex h-40 w-40 items-center gap-3">
               <img
-                src={Url + item.image}
-                className="h-12 w-12 rounded"
+                src={Url + 'Image/Products/b912d7ed-1430-4867-ac0f-2329a992cad5-1769271156945.jpg'}
+                className="w-full h-full rounded"
               />
             </div>
 

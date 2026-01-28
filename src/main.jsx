@@ -54,12 +54,12 @@ const router = createBrowserRouter([
         path: "/review-request",
         element: <ReviewRequest></ReviewRequest>,
       },
+      // {
+      //   path: "/completed-order",
+      //   element: <CompetedOrders></CompetedOrders>,
+      // },
       {
-        path: "/completed-order",
-        element: <CompetedOrders></CompetedOrders>,
-      },
-      {
-        path: "/running-order",
+        path: "/all-orders",
         element: <RunningOrders></RunningOrders>,
       },
       {

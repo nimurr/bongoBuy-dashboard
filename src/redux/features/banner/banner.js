@@ -5,7 +5,7 @@ const bannerApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getBanner: builder.query({
             query: () => ({
-                url: "/banner-ads",
+                url: "/banner-ads/all-for-admin",
                 method: "GET",
             }),
         }),
