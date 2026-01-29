@@ -94,13 +94,6 @@ export default function Settings() {
       <form onSubmit={handleSetting} className=" text-white">
         <h2 className="text-3xl font-bold mb-5 dark:text-white">Contact Information</h2>
 
-        {/* <div className="bg-white p-5 my-5">
-          <label className="block mt-5">
-            <span className="block">Website Primary Color</span>
-           <input type="color" name="color" id="" />
-          </label>
-        </div> */}
-
         <div className="bg-white  dark:bg-gray-800 rounded-md p-5 my-5">
           <label className="block">
             <span className="block dark:text-white">Email</span>
