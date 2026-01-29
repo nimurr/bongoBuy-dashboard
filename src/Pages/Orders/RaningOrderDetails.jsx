@@ -2,15 +2,30 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { IoIosPrint } from "react-icons/io";
 import { useParams } from "react-router-dom";
+import { useGetSingleOrderQuery } from "../../redux/features/orders/orders";
+import moment from "moment";
 
 export default function RaningOrderDetails() {
-  const { id } = useParams();
-  const [orders, setOrders] = useState([]);
 
+  const { id } = useParams();
+  const { data } = useGetSingleOrderQuery(id)
+  const orderData = data?.data?.attributes;
+  const products = data?.data?.attributes?.products;
+  console.log(products)
+
+
+  const [order, setOrder] = useState(null);
+  const [status, setStatus] = useState("");
+
+  // Fetch order details
   useEffect(() => {
     axios
       .get(`http://localhost:5000/customer-orders/${id}`)
-      .then((res) => setOrders(res?.data));
+      .then((res) => {
+        setOrder(res?.data);
+        setStatus(res?.data?.status || "pending");
+      })
+      .catch((err) => console.error(err));
   }, [id]);
 
   const handleBack = () => {
@@ -21,8 +36,19 @@ export default function RaningOrderDetails() {
     window.print();
   };
 
+  const handleStatusChange = (e) => {
+    const newStatus = e.target.value;
+    setStatus(newStatus);
+
+    // Optional: Update backend status
+    axios
+      .patch(`http://localhost:5000/customer-orders/${id}`, { status: newStatus })
+      .then((res) => console.log("Status updated", res.data))
+      .catch((err) => console.error(err));
+  };
+
   return (
-    <div className="p-10 dark:text-gray-200 ">
+    <div className="p-10 dark:text-gray-200">
       {/* Back and Print Buttons */}
       <div className="flex justify-between mb-10">
         <button
@@ -39,89 +65,110 @@ export default function RaningOrderDetails() {
         </button>
       </div>
 
-      {/* Print Area */}
-      <div className="print-area border border-gray-300 rounded-lg bg-white dark:bg-gray-700">
-        {orders?.map((item, idx) => (
-          <div key={idx} className=" p-6 mb-6">
-            <h1 className="text-2xl font-bold text-center mb-10 underline uppercase">Invoice</h1>
-            <div className="text-sm">
+      {/* Status Selector */}
+      <div className="flex items-center justify-end my-5">
+        <label className="mr-2 font-medium dark:text-gray-300">Change Status:</label>
+        <select
+          className="bg-gray-800 py-1 rounded-md text-white px-2"
+          value={status}
+          onChange={handleStatusChange}
+        >
+          <option value="placed">Placed</option>
+          <option value="packeging">Packeging</option>
+          <option value="shipped">Shipped</option>
+          <option value="delivered">Delivered</option>
+          <option value="return">Return</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
 
-              <div className="flex gap-5 p-5 justify-between border-2 rounded-xl border-gray-200  items-center w-full">
-                <img
-                  className="w-14 rounded-full"
-                  src={item?.productImages}
-                  alt=""
-                />
-                <h2 className=" mb-2 text-center">
-                  <span className="font-bold">Product Name <br /></span>{" "}
-                  {item?.productName}
-                </h2>
-                <h2 className=" mb-2 text-center">
-                  <span className="font-bold">Total Price <br /></span>{" "}
-                  {item?.productPrice} TK
-                </h2>
-                <h2 className=" mb-2 text-center">
-                  <span className="font-bold">Product Quantity <br /></span>{" "}
-                  {item?.productQuantity}
-                </h2>
-                <h2 className=" mb-2 text-center">
-                  <span className="font-bold">Product Size <br /></span>{" "}
-                  {item?.productSize}
-                </h2>
-              </div>
-            </div>
+      {/* Print Area */}
+      <div className="print-area max-w-6xl mx-auto mt-10 border border-gray-300 rounded-lg bg-white dark:bg-gray-700 p-6">
+        <h1 className="text-2xl font-bold text-center mb-10 underline uppercase">Invoice</h1>
+
+        {/* Products Table */}
+        <div className="p-6">
+          <h2 className="text-xl font-bold mb-5">Product Details</h2>
+          <table className="w-full border border-gray-300 text-sm">
+            <thead className="bg-gray-200 dark:bg-gray-600">
+              <tr>
+                <th className="border p-2">Image</th>
+                <th className="border p-2">Product Name</th>
+                <th className="border p-2">Size</th>
+                <th className="border p-2">Quantity</th>
+                <th className="border p-2">Price</th>
+                <th className="border p-2">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products?.map((item, index) => (
+                <tr key={index} className="text-center">
+                  <td className="border p-2">
+                    <img
+                      src={item?.productImages}
+                      className="w-12 mx-auto rounded"
+                      alt={item?.productName}
+                    />
+                  </td>
+                  <td className="border p-2">{item?.productId?.name || 'N/A'}</td>
+                  <td className="border p-2">{item?.productId?.size || 'N/A'}</td>
+                  <td className="border p-2">{item?.quantity || 'N/A'}</td>
+                  <td className="border p-2">৳{item?.productId?.price || 'N/A'} </td>
+                  <td className="border p-2 font-semibold">
+                    ৳{item?.price || 'N/A'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Grand Total */}
+          <div className="flex justify-end pr-10 mt-5 text-lg font-bold">
+            Grand Total: ৳{orderData?.total}
           </div>
-        ))}
-        <hr />
-        <div className="p-10 grid grid-cols-2 gap-5">
-          <div className="mt-5 text-sm ">
+        </div>
+
+        {/* Customer & Seller Info */}
+        <div className="p-10 grid grid-cols-2 gap-5 mt-10">
+          {/* Customer Info */}
+          <div className="mt-5 text-sm">
             <h2 className="text-2xl font-bold mb-5">Customer Info</h2>
-            <h2 className=" mb-2">
-              <span className="font-semibold">Customer Name:</span>{" "}
-              {orders[0]?.fullName}
+            <h2 className="mb-2">
+              <span className="font-semibold">Customer Name:</span> {orderData?.userName || ""}
             </h2>
-            <h2 className=" mb-2">
-              <span className="font-semibold">Number:</span> {orders[0]?.number}
+            <h2 className="mb-2">
+              <span className="font-semibold">Number:</span> {"0" + orderData?.phoneNumber || ""}
             </h2>
-            <h2 className=" mb-2">
-              <span className="font-semibold">Email:</span> {orders[0]?.email}
+            <h2 className="mb-2">
+              <span className="font-semibold">Full Address:</span> {orderData?.address || ""}
             </h2>
-            <h2 className=" mb-2">
-              <span className="font-semibold">Full Address:</span>{" "}
-              {orders[0]?.fullAddress}
-            </h2>
-            <h2 className=" mb-2">
-              <span className="font-semibold">Delivery Area:</span>{" "}
-              {orders[0]?.deliveryArea}
+            <h2 className="mb-2">
+              <span className="font-semibold">Order Date:</span> {moment(order?.createdAt).format("DD-MM-YYYY") || ""}
             </h2>
           </div>
-          <div
-            className="mt-5 text-sm text-right
-"
-          >
+
+          {/* Seller Info */}
+          <div className="mt-5 text-sm text-right">
             <h2 className="text-2xl font-bold mb-5">Seller Info</h2>
-            <h2 className=" mb-2">
-              <span className="font-semibold">Seller Name:</span>{" "}
-              {orders[0]?.fullName}
+            <h2 className="mb-2">
+              <span className="font-semibold">Seller Name:</span> {order?.sellerName || "BongoBuy"}
             </h2>
-            <h2 className=" mb-2">
-              <span className="font-semibold">Support Number:</span>{" "}
-              {orders[0]?.number}
+            <h2 className="mb-2">
+              <span className="font-semibold">Support Number:</span> {order?.sellerNumber || "017XXXXXXX"}
             </h2>
-            <h2 className=" mb-2">
-              <span className="font-semibold">Seller Email:</span>{" "}
-              {orders[0]?.email}
+            <h2 className="mb-2">
+              <span className="font-semibold">Seller Email:</span> {order?.sellerEmail || "support@bongobuy.com"}
             </h2>
-            <h2 className=" mb-2">
-              <span className="font-semibold">Seller Address:</span>{" "}
-              {orders[0]?.fullAddress}
+            <h2 className="mb-2">
+              <span className="font-semibold">Seller Address:</span> {order?.sellerAddress || "Dhaka, Bangladesh"}
             </h2>
           </div>
         </div>
 
-        <div className="my-20 flex justify-end mr-10 ">
+        {/* Signature */}
+        <div className="my-20 flex justify-end mr-10">
           <div className="inline border-dotted border-t-2 border-black dark:border-gray-200 pt-1">
-            Signature Of BongoBuy
+            Signature Of AmarKids
           </div>
         </div>
       </div>
@@ -129,7 +176,6 @@ export default function RaningOrderDetails() {
       {/* Print-only CSS */}
       <style jsx>{`
         @media print {
-          /* Hide everything except print-area */
           body * {
             visibility: hidden;
           }

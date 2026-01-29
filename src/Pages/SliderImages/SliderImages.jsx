@@ -168,6 +168,8 @@ export default function SliderImages() {
               />
             </label>
 
+            <p className="text-xm my-3">Size Must be (1380px X 380px)</p>
+
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setOpenModal(false)}
