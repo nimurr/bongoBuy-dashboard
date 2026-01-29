@@ -117,7 +117,7 @@ export default function StockDetails() {
         {/* Earnings Line Chart */}
         <div className="bg-white text-white dark:bg-gray-800 p-4 rounded-lg shadow">
           <h3 className="text-lg font-semibold text-center mb-3">
-            Total Earnings (last 30 days)
+            Earnings ( Last 6 months )
           </h3>
 
           <ResponsiveContainer width="100%" height={250}>
