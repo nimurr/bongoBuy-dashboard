@@ -137,7 +137,7 @@ export default function UserMenu() {
         </div>
 
         <Dropdown
-          className=""
+          className="w-40"
           arrowIcon={false}
           inline
           label={
@@ -149,12 +149,12 @@ export default function UserMenu() {
             />
           }
         >
-          <Dropdown.Item className="flex text-gray-800 hover:text-white hover:bg-green-500 dark:text-white items-center gap-3">
+          <Dropdown.Item className="flex text-gray-800 hover:text-white hover:bg-green-500 dark:text-white items-center gap-3 py-3">
             <Link className="flex items-center gap-2" to="/profile">
               <CiUser className="text-xl" />Profile
             </Link>
           </Dropdown.Item>
-          <Dropdown.Item className="flex items-center gap-3 hover:text-white hover:bg-green-500" onClick={handleLogout}>
+          <Dropdown.Item className="flex items-center gap-3 hover:text-white hover:bg-green-500 py-3" onClick={handleLogout}>
             <FaArrowRightFromBracket className="text-xl" /> Log Out
           </Dropdown.Item>
         </Dropdown>
