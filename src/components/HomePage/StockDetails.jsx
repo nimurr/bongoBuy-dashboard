@@ -156,7 +156,7 @@ export default function StockDetails() {
         </div>
 
         {/* Total Products */}
-        <div className="flex justify-between rounded-md bg-gradient-to-r from-blue-500 to-indigo-900 border-b-[25px] border-indigo-800 px-5 py-10">
+        <div className="flex justify-between rounded-md bg-gradient-to-r from-purple-500 to-purple-900 border-b-[25px] border-indigo-800 px-5 py-10">
           <div>
             <h2 className="text-2xl font-semibold text-white">
               Total Products
@@ -225,9 +225,7 @@ export default function StockDetails() {
         </div>
 
       </div>
-
-
-
     </div>
   );
 }
+ 

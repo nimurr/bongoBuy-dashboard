@@ -45,7 +45,7 @@ export default function Navbar({ handleShow }) {
 
 
   return (
-    <div className="h-[100vh] relative overflow-y-auto w-full flex flex-col justify-between bg-white z-50 dark:bg-[#111827] border-r border-gray-300 dark:border-gray-800 px-2 py-6">
+    <div className="h-[100vh] relative overflow-y-auto w-full flex flex-col justify-between bg-white z-50 dark:bg-[#111827] border-r border-gray-300 dark:border-gray-800  py-6">
       {/* top nav item  */}
       <div className="">
         <Link to={"/"} className="text-4xl md:text-6xl flex items-center justify-center font-extrabold text-gray-800 dark:text-white">
@@ -56,7 +56,7 @@ export default function Navbar({ handleShow }) {
             <NavLink
               to={"/"}
               onClick={handleShow}
-              className="my-1 flex gap-2 rounded-lg items-center font-semibold text-gray-800 dark:text-white p-3"
+              className="my-1 flex gap-2 rounded-r-full px-6 items-center font-semibold text-gray-800 dark:text-white p-3"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <IoHomeOutline />
@@ -66,7 +66,7 @@ export default function Navbar({ handleShow }) {
             <NavLink
               to={"/all-orders"}
               onClick={handleShow}
-              className="my-1 flex gap-2 rounded-lg items-center justify-between font-semibold text-gray-800 dark:text-white p-3"
+              className="my-1 flex gap-2 rounded-r-full px-6 items-center justify-between font-semibold text-gray-800 dark:text-white p-3"
             >
               <div className="flex gap-2 items-center">
                 <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -81,7 +81,7 @@ export default function Navbar({ handleShow }) {
             {/* <NavLink
               to={"/completed-order"}
               onClick={handleShow}
-              className="my-1 flex gap-2  rounded-lg justify-between items-center font-semibold text-gray-800 dark:text-white p-2"
+              className="my-1 flex gap-2  rounded-r-full px-6 justify-between items-center font-semibold text-gray-800 dark:text-white p-2"
             >
               <div className="flex gap-2 items-center">
                 <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -111,7 +111,7 @@ export default function Navbar({ handleShow }) {
             <NavLink
               to={"/review-request"}
               onClick={handleShow}
-              className="my-1 flex gap-2  rounded-lg justify-between items-center font-semibold text-gray-800 dark:text-white p-3"
+              className="my-1 flex gap-2  rounded-r-full px-6 justify-between items-center font-semibold text-gray-800 dark:text-white p-3"
             >
               <div className="flex gap-2 items-center">
                 <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -127,7 +127,7 @@ export default function Navbar({ handleShow }) {
             <NavLink
               to={"/add-products"}
               onClick={handleShow}
-              className="my-1 flex gap-2  rounded-lg justify-between items-center font-semibold text-gray-800 dark:text-white p-3"
+              className="my-1 flex gap-2  rounded-r-full px-6 justify-between items-center font-semibold text-gray-800 dark:text-white p-3"
             >
               <div className="flex gap-2 items-center">
                 <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
@@ -143,7 +143,7 @@ export default function Navbar({ handleShow }) {
             <NavLink
               to={"/add-catagories"}
               onClick={handleShow}
-              className="my-1 flex gap-2  rounded-lg items-center font-semibold text-gray-800 dark:text-white p-3"
+              className="my-1 flex gap-2  rounded-r-full px-6 items-center font-semibold text-gray-800 dark:text-white p-3"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <IoMdAddCircleOutline />
@@ -154,7 +154,7 @@ export default function Navbar({ handleShow }) {
             <NavLink
               to={"/slider-images"}
               onClick={handleShow}
-              className="my-1 flex gap-2  rounded-lg items-center font-semibold text-gray-800 dark:text-white p-3"
+              className="my-1 flex gap-2  rounded-r-full px-6 items-center font-semibold text-gray-800 dark:text-white p-3"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <SiSlides />
@@ -165,7 +165,7 @@ export default function Navbar({ handleShow }) {
             <NavLink
               to={"/settings"}
               onClick={handleShow}
-              className="my-1 flex gap-2  rounded-lg items-center font-semibold text-gray-800 dark:text-white p-3"
+              className="my-1 flex gap-2  rounded-r-full px-6 items-center font-semibold text-gray-800 dark:text-white p-3"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <IoSettingsOutline />
@@ -176,7 +176,7 @@ export default function Navbar({ handleShow }) {
             <NavLink
               to={"/add-admin"}
               onClick={handleShow}
-              className="my-1 flex gap-2  rounded-lg items-center font-semibold text-gray-800 dark:text-white p-3"
+              className="my-1 flex gap-2  rounded-r-full px-6 items-center font-semibold text-gray-800 dark:text-white p-3"
             >
               <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
                 <MdOutlineSecurity />
