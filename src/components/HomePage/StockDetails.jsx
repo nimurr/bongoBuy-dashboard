@@ -25,7 +25,7 @@ export default function StockDetails() {
   const [categories, setCategories] = useState(6);
   const [allProducts, setAllProducts] = useState(120);
   const [totalCompletedOrderPrice, setTotalCompletedOrderPrice] =
-    useState(78500);
+    useState(7800);
 
   // Fake loading simulation (optional)
   useEffect(() => {
@@ -39,14 +39,14 @@ export default function StockDetails() {
     { name: "Canceled", value: cancelOrder },
   ];
   const earningLineData = [
-    { day: "Fri", earning: 8200 },
-    { day: "Sat", earning: 9600 },
-    { day: "Sun", earning: 7200 },
-    { day: "Mon", earning: 10400 },
-    { day: "Tue", earning: 11800 },
-    { day: "Wed", earning: 13600 },
-    { day: "Thu", earning: totalCompletedOrderPrice },
+    { month: "Aug", earning: 42000 },
+    { month: "Sep", earning: 51000 },
+    { month: "Oct", earning: 46500 },
+    { month: "Nov", earning: 59000 },
+    { month: "Dec", earning: 67000 },
+    { month: "Jan", earning: totalCompletedOrderPrice },
   ];
+
 
 
 
@@ -123,7 +123,7 @@ export default function StockDetails() {
           <ResponsiveContainer width="100%" height={250}>
             <LineChart data={earningLineData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis dataKey="day" stroke="#9ca3af" />
+              <XAxis dataKey="month" stroke="#9ca3af" />
               <YAxis stroke="#9ca3af" />
               <Tooltip />
               <Legend />
