@@ -1,192 +1,233 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { FaCuttlefish, FaOpencart, FaProductHunt, FaUsers } from "react-icons/fa6";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  LineChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Line,
+} from "recharts";
+
+import { FaCuttlefish, FaOpencart, FaProductHunt } from "react-icons/fa6";
 import { TbCoinTaka } from "react-icons/tb";
 import { BsCartXFill, BsFillCartCheckFill } from "react-icons/bs";
 
-
 export default function StockDetails() {
-  const [runningOrder, setRunningOrder] = useState(0);
-  const [cancelOrder, setCancelOrder] = useState(0);
-  const [compleatOrder, setCompleatOrder] = useState([]);
-  const [compleatOrderLength, setCompleatOrderLength] = useState([]);
-  const [customerMessage, setCustomerMessage] = useState(0);
-  const [reviewRequest, setReviewRequest] = useState(0);
-  const [categories, setCategories] = useState(0);
-  const [allProducts, setAllProducts] = useState(0);
+  // 🔹 DEMO STATE DATA
+  const [runningOrder, setRunningOrder] = useState(12);
+  const [cancelOrder, setCancelOrder] = useState(5);
+  const [compleatOrderLength, setCompleatOrderLength] = useState(18);
+  const [categories, setCategories] = useState(6);
+  const [allProducts, setAllProducts] = useState(120);
+  const [totalCompletedOrderPrice, setTotalCompletedOrderPrice] =
+    useState(78500);
 
-  // console.log(reviewRequest)
-
+  // Fake loading simulation (optional)
   useEffect(() => {
-    axios.get("http://localhost:5000/customer-orders").then((res) => {
-      const orders = res.data || [];
-      setRunningOrder(
-        orders.filter((item) => item?.orderStatus !== "Completed" && item?.orderStatus !== "Cancel").length
-      );
-      setCompleatOrder(
-        orders.filter((item) => item?.orderStatus === "Completed")
-      );
-
-      setCompleatOrderLength(
-        orders.filter((item) => item?.orderStatus === "Completed").length
-      );
-      setCancelOrder(
-        orders.filter((item) => item?.orderStatus === "Cancel").length
-      );
-    });
-
-    axios
-      .get("http://localhost:5000/customer-message")
-      .then((res) => setCustomerMessage(res.data?.length || 0));
-
-    axios
-      .get("http://localhost:5000/allReviews")
-      .then((res) => setReviewRequest(res.data?.length || 0));
-
-    axios
-      .get("http://localhost:5000/all-categories")
-      .then((res) => setCategories(res.data?.length || 0));
-
-    axios
-      .get("http://localhost:5000/addProducts")
-      .then((res) => setAllProducts(res.data?.length || 0));
+    // Later you can replace with API calls
   }, []);
 
-  const totalCompletedOrderPrice = compleatOrder.reduce(
-    (total, order) => total + (order.productPrice || 0),
-    0
-  );
+  // 📊 CHART DATA
+  const orderChartData = [
+    { name: "Completed", value: compleatOrderLength },
+    { name: "Running", value: runningOrder },
+    { name: "Canceled", value: cancelOrder },
+  ];
+  const earningLineData = [
+    { day: "Fri", earning: 8200 },
+    { day: "Sat", earning: 9600 },
+    { day: "Sun", earning: 7200 },
+    { day: "Mon", earning: 10400 },
+    { day: "Tue", earning: 11800 },
+    { day: "Wed", earning: 13600 },
+    { day: "Thu", earning: totalCompletedOrderPrice },
+  ];
 
-  console.log(totalCompletedOrderPrice);
+
+
+  const productChartData = [
+    { name: "Products", value: allProducts },
+    { name: "Categories", value: categories },
+  ];
+
+  const earningChartData = [
+    { name: "Total Earning (TK)", value: totalCompletedOrderPrice },
+  ];
+
+  const COLORS = ["#D61F69", "#22c55e", "#7e3af2", "#f59e0b"];
 
   return (
     <div>
-      <div className="mb-10">
-        <h2 className="text-3xl font-bold mb-5 text-gray-800 dark:text-white flex justify-between">
-          Stock Amount & Details{" "}
-        </h2>
-        <div className="grid xl:grid-cols-3 sm:grid-cols-2  lg:gap-4 gap-2">
-          <div className="w-full flex justify-between h-auto rounded-md bg-primary border-b-[25px] border-[#0ba338] px-5 sm:py-5 py-2 ">
-            <div>
-              <h2 className="sm:text-2xl font-semibold text-gray-50">
-                Total Sell
-              </h2>
-              <h2 className="text-5xl font-semibold text-gray-50 mt-5">
-                {totalCompletedOrderPrice ? totalCompletedOrderPrice : "00"} TK
-              </h2>
-            </div>
-            <div>
-              <TbCoinTaka className="text-5xl  text-white"></TbCoinTaka>
-            </div>
-          </div>
+      {/* ======= PIE CHART SECTION ======= */}
+      <div className="grid md:grid-cols-3 gap-6 mb-12">
 
-          <div className="w-full flex justify-between h-auto rounded-md bg-primary border-b-[25px] border-[#0ba338] px-5 sm:py-5 py-2 ">
-            <div>
-              <h2 className="sm:text-2xl font-semibold text-gray-50">
-                Total Products
-              </h2>
-              <h2 className="text-5xl font-semibold text-gray-50 mt-5">{allProducts ? allProducts : "00"}</h2>
-            </div>
-            <div>
-              <FaProductHunt className="text-5xl   text-white"></FaProductHunt>
-            </div>
-          </div>
-
-          <div className="w-full flex justify-between h-auto rounded-md bg-primary border-b-[25px] border-[#0ba338] px-5 sm:py-5 py-2 ">
-            <div>
-              <h2 className="sm:text-2xl font-semibold text-gray-50">
-                Catagories
-              </h2>
-              <h2 className="text-5xl font-semibold text-gray-50 mt-5">{categories}</h2>
-            </div>
-            <div>
-              <FaCuttlefish className="text-5xl  text-white"></FaCuttlefish>
-            </div>
-          </div>
+        {/* Orders Pie */}
+        <div className="bg-white text-white dark:bg-gray-800 p-4 rounded-lg shadow">
+          <h3 className="text-lg font-semibold  text-center mb-3">
+            Orders Status
+          </h3>
+          <ResponsiveContainer width="100%" height={250}>
+            <PieChart>
+              <Pie
+                data={orderChartData}
+                dataKey="value"
+                nameKey="name"
+                outerRadius={90}
+                label
+              >
+                {orderChartData.map((_, index) => (
+                  <Cell key={index} fill={COLORS[index]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
         </div>
+
+        {/* Products Pie */}
+        <div className="bg-white text-white dark:bg-gray-800 p-4 rounded-lg shadow">
+          <h3 className="text-lg font-semibold text-center mb-3">
+            Products Overview
+          </h3>
+          <ResponsiveContainer width="100%" height={250}>
+            <PieChart>
+              <Pie
+                data={productChartData}
+                dataKey="value"
+                nameKey="name"
+                outerRadius={90}
+                label
+              >
+                {productChartData.map((_, index) => (
+                  <Cell key={index} fill={COLORS[index]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Earnings Line Chart */}
+        <div className="bg-white text-white dark:bg-gray-800 p-4 rounded-lg shadow">
+          <h3 className="text-lg font-semibold text-center mb-3">
+            Total Earnings (last 30 days)
+          </h3>
+
+          <ResponsiveContainer width="100%" height={250}>
+            <LineChart data={earningLineData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+              <XAxis dataKey="day" stroke="#9ca3af" />
+              <YAxis stroke="#9ca3af" />
+              <Tooltip />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="earning"
+                stroke="#D61F69"
+                strokeWidth={3}
+                dot={{ r: 4 }}
+                activeDot={{ r: 6 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
       </div>
 
-      <div className="mb-10">
-        <h2 className="text-3xl font-bold mb-5 text-gray-800 dark:text-white flex justify-between">
-          Orders Details{" "}
-        </h2>
-        <div className="grid xl:grid-cols-3 sm:grid-cols-2  lg:gap-4 gap-2">
-          <div className="w-full flex justify-between h-auto rounded-md bg-pink-600 border-b-[25px] border-pink-400 px-5 sm:py-5 py-2 ">
-            <div>
-              <h2 className="sm:text-2xl font-semibold text-gray-50">
-                Completed Orders
-              </h2>
-              <h2 className="text-5xl font-semibold text-gray-50 mt-5">{compleatOrderLength}</h2>
-            </div>
-            <div>
-              <BsFillCartCheckFill className="text-5xl   text-white"></BsFillCartCheckFill>
-            </div>
+      {/* ======= SUMMARY CARDS ======= */}
+      <div className="grid xl:grid-cols-3 sm:grid-cols-2 gap-4 mb-10">
+
+        {/* Total Sell */}
+        <div className="flex justify-between rounded-md bg-gradient-to-r from-green-500 to-emerald-900 border-b-[25px] border-emerald-900 px-5 py-10">
+          <div>
+            <h2 className="text-2xl font-semibold text-white">Total Sell</h2>
+            <h2 className="text-5xl font-bold text-white mt-4">
+              {totalCompletedOrderPrice} TK
+            </h2>
           </div>
-          <div className="w-full flex justify-between h-auto rounded-md bg-purple-600 border-b-[25px] border-purple-400 px-5 sm:py-5 py-2 ">
-            <div>
-              <h2 className="sm:text-2xl font-semibold text-gray-50">
-                Running Orders
-              </h2>
-              <h2 className="text-5xl font-semibold text-gray-50 mt-5">{runningOrder}</h2>
-            </div>
-            <div>
-              <FaOpencart className="text-5xl   text-white"></FaOpencart>
-            </div>
-          </div>
-          <div className="w-full flex justify-between h-auto rounded-md bg-red-700 border-b-[25px] border-red-400 px-5 sm:py-5 py-2 ">
-            <div>
-              <h2 className="sm:text-2xl font-semibold text-gray-50">
-                Cancel Orders
-              </h2>
-              <h2 className="text-5xl font-semibold text-gray-50 mt-5">{cancelOrder}</h2>
-            </div>
-            <div>
-              <BsCartXFill className="text-5xl   text-white"></BsCartXFill>
-            </div>
-          </div>
+          <TbCoinTaka className="text-5xl text-white" />
         </div>
+
+        {/* Total Products */}
+        <div className="flex justify-between rounded-md bg-gradient-to-r from-blue-500 to-indigo-900 border-b-[25px] border-indigo-800 px-5 py-10">
+          <div>
+            <h2 className="text-2xl font-semibold text-white">
+              Total Products
+            </h2>
+            <h2 className="text-5xl font-bold text-white mt-4">
+              {allProducts}
+            </h2>
+          </div>
+          <FaProductHunt className="text-5xl text-white" />
+        </div>
+
+        {/* Categories */}
+        <div className="flex justify-between rounded-md bg-gradient-to-r from-orange-500 to-amber-900 border-b-[25px] border-amber-800 px-5 py-10">
+          <div>
+            <h2 className="text-2xl font-semibold text-white">Categories</h2>
+            <h2 className="text-5xl font-bold text-white mt-4">
+              {categories}
+            </h2>
+          </div>
+          <FaCuttlefish className="text-5xl text-white" />
+        </div>
+
       </div>
 
-      {/* <div className="mb-10">
-        <h2 className="text-3xl font-bold mb-5 dark:text-white flex justify-between">
-          Others Details{" "}
-        </h2>
-        <div className="grid xl:grid-cols-3 sm:grid-cols-2  lg:gap-4 gap-2">
-          <div className="w-full flex justify-between h-auto rounded-md bg-primary border-b-[25px] border-[#0ba338] px-5 sm:py-5 py-2 ">
-            <div>
-              <h2 className="sm:text-2xl font-semibold text-gray-50">
-                Total Admins
-              </h2>
-              <h2 className="text-5xl font-semibold text-gray-50 mt-5">30</h2>
-            </div>
-            <div>
-              <FaUsers className="text-5xl   text-white"></FaUsers>
-            </div>
-          </div> 
-          <div className="w-full flex justify-between h-auto rounded-md bg-primary border-b-[25px] border-[#0ba338] px-5 sm:py-5 py-2 ">
-            <div>
-              <h2 className="sm:text-2xl font-semibold text-gray-50">
-                Total Reviews
-              </h2>
-              <h2 className="text-5xl font-semibold text-gray-50 mt-5">{}</h2>
-            </div>
-            <div>
-              <FaUsers className="text-5xl   text-white"></FaUsers>
-            </div>
-          </div> 
-          <div className="w-full flex justify-between h-auto rounded-md bg-primary border-b-[25px] border-[#0ba338] px-5 sm:py-5 py-2 ">
-            <div>
-              <h2 className="sm:text-2xl font-semibold text-gray-50">
-                Active Users
-              </h2>
-              <h2 className="text-5xl font-semibold text-gray-50 mt-5">2</h2>
-            </div>
-            <div>
-              <FaUsers className="text-5xl   text-white"></FaUsers>
-            </div>
+
+      {/* ======= ORDER DETAILS ======= */}
+      <div className="grid xl:grid-cols-3 sm:grid-cols-2 gap-4">
+
+        {/* Completed */}
+        <div className="flex justify-between rounded-md bg-gradient-to-r from-pink-500 to-rose-900 border-b-[25px] border-rose-800 px-5 py-10">
+          <div>
+            <h2 className="text-2xl font-semibold text-white">
+              Completed Orders
+            </h2>
+            <h2 className="text-5xl font-bold text-white mt-4">
+              {compleatOrderLength}
+            </h2>
           </div>
+          <BsFillCartCheckFill className="text-5xl text-white" />
         </div>
-      </div> */}
+
+        {/* Running */}
+        <div className="flex justify-between rounded-md bg-gradient-to-r from-purple-500 to-violet-900 border-b-[25px] border-violet-800 px-5 py-10">
+          <div>
+            <h2 className="text-2xl font-semibold text-white">
+              Running Orders
+            </h2>
+            <h2 className="text-5xl font-bold text-white mt-4">
+              {runningOrder}
+            </h2>
+          </div>
+          <FaOpencart className="text-5xl text-white" />
+        </div>
+
+        {/* Cancel */}
+        <div className="flex justify-between rounded-md bg-gradient-to-r from-red-500 to-red-900 border-b-[25px] border-red-800 px-5 py-10">
+          <div>
+            <h2 className="text-2xl font-semibold text-white">
+              Cancel Orders
+            </h2>
+            <h2 className="text-5xl font-bold text-white mt-4">
+              {cancelOrder}
+            </h2>
+          </div>
+          <BsCartXFill className="text-5xl text-white" />
+        </div>
+
+      </div>
+
+
+
     </div>
   );
 }
