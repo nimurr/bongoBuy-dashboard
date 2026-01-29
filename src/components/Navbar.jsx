@@ -74,9 +74,9 @@ export default function Navbar({ handleShow }) {
                 </div>
                 All Orders{" "}
               </div>
-              <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
+              {/* <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
                 {runningOrder ? runningOrder : 0}
-              </span>
+              </span> */}
             </NavLink>
             {/* <NavLink
               to={"/completed-order"}
@@ -108,21 +108,7 @@ export default function Navbar({ handleShow }) {
                 {customerMessage ? customerMessage : 0}
               </span>
             </NavLink> */}
-            <NavLink
-              to={"/review-request"}
-              onClick={handleShow}
-              className="my-1 flex gap-2  rounded-r-full px-6 justify-between items-center font-semibold text-gray-800 dark:text-white p-3"
-            >
-              <div className="flex gap-2 items-center">
-                <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
-                  <MdStars />
-                </div>
-                Review Request{" "}
-              </div>
-              <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
-                {reviewRequest ? reviewRequest : 0}
-              </span>
-            </NavLink>
+
 
             <NavLink
               to={"/add-products"}
@@ -135,9 +121,9 @@ export default function Navbar({ handleShow }) {
                 </div>
                 All Products{" "}
               </div>
-              <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
+              {/* <span className="w-7 h-7 text-xs text-white flex justify-center items-center bg-red-600 rounded-full">
                 {allProducts ? allProducts : 0}
-              </span>
+              </span> */}
             </NavLink>
 
             <NavLink
@@ -149,6 +135,19 @@ export default function Navbar({ handleShow }) {
                 <IoMdAddCircleOutline />
               </div>
               Add Catagories
+            </NavLink>
+
+            <NavLink
+              to={"/review-request"}
+              onClick={handleShow}
+              className="my-1 flex gap-2  rounded-r-full px-6 justify-between items-center font-semibold text-gray-800 dark:text-white p-3"
+            >
+              <div className="flex gap-2 items-center">
+                <div className="text-2xl group-hover:text-red-500 text-gray-800 dark:text-white">
+                  <MdStars />
+                </div>
+                Review Request{" "}
+              </div>
             </NavLink>
 
             <NavLink

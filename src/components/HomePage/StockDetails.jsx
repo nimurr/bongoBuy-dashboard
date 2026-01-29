@@ -59,7 +59,7 @@ export default function StockDetails() {
     { name: "Total Earning (TK)", value: totalCompletedOrderPrice },
   ];
 
-  const COLORS = ["#D61F69", "#22c55e", "#7e3af2", "#f59e0b"];
+  const COLORS = ["#22c55e", "#d61f69", "#d60c0c", "#f59e0b"];
 
   return (
     <div>

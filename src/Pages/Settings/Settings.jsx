@@ -84,7 +84,7 @@ export default function Settings() {
 
   if (loading) {
     return <div className="h-[40vh] flex justify-center items-center">
-      <img className="w-32" src="https://res.cloudinary.com/nerob/image/upload/v1729153381/BongoBuy/vjrj5chnn35depdimlhs.gif" alt="" />
+      <img className="w-32" src="https://res.cloudinary.com/nerob/image/upload/v1769675365/Protfolio/QNF78Uk4YE_c4bkok.gif" alt="" />
     </div>; // Show a loading state
   }
 
