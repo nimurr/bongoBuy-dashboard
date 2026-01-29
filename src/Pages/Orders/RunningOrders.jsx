@@ -49,9 +49,11 @@ export default function RunningOrders() {
             className="border-gray-800 py-1 rounded-md"
           >
             <option value="">All</option>
-            <option value="pending">Pending</option>
-            <option value="processing">Processing</option>
+            <option value="placed">Placed</option>
+            <option value="packeging">Packeging</option>
+            <option value="shipped">Shipped</option>
             <option value="delivered">Delivered</option>
+            <option value="return">Return</option>
             <option value="cancelled">Cancelled</option>
           </select>
         </div>
